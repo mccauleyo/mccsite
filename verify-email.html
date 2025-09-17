@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - MCCSITE</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .verification-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            padding: 20px;
+        }
+        .verification-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: var(--shadow);
+        }
+        .verification-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+        .verification-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .verification-message {
+            color: var(--muted);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        .verification-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-home {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+        .btn-home:hover {
+            background: var(--primary-dark);
+        }
+        .status-success {
+            color: #10b981;
+        }
+        .status-error {
+            color: #ef4444;
+        }
+        .status-pending {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="verification-container">
+        <div class="verification-card">
+            <div class="verification-icon" id="verification-icon">📧</div>
+            <h1 class="verification-title" id="verification-title">Verifying Email...</h1>
+            <p class="verification-message" id="verification-message">Please wait while we verify your email address.</p>
+            <div class="verification-actions" id="verification-actions" style="display: none;">
+                <a href="index.html" class="btn-home">Go to Homepage</a>
+                <a href="get-started.html" class="btn-home">Go to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        
+        // Verification states
+        const icon = document.getElementById('verification-icon');
+        const title = document.getElementById('verification-title');
+        const message = document.getElementById('verification-message');
+        const actions = document.getElementById('verification-actions');
+        
+        // Verify email function
+        function verifyEmail(token) {
+            if (!token) {
+                showError('No verification token provided.');
+                return;
+            }
+            
+            // Get all users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.id === token);
+            
+            if (!user) {
+                showError('Invalid verification token.');
+                return;
+            }
+            
+            // Mark email as verified
+            user.emailVerified = true;
+            
+            // Update user in localStorage
+            const userIndex = users.findIndex(u => u.id === token);
+            if (userIndex !== -1) {
+                users[userIndex] = user;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // Update current user if they're logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (currentUser && currentUser.id === token) {
+                currentUser.emailVerified = true;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            showSuccess();
+        }
+        
+        function showSuccess() {
+            icon.textContent = '✅';
+            icon.className = 'verification-icon status-success';
+            title.textContent = 'Email Verified!';
+            title.className = 'verification-title status-success';
+            message.textContent = `Your email has been successfully verified! You can now access all features of your account.`;
+            actions.style.display = 'flex';
+        }
+        
+        function showError(errorMessage) {
+            icon.textContent = '❌';
+            icon.className = 'verification-icon status-error';
+            title.textContent = 'Verification Failed';
+            title.className = 'verification-title status-error';
+            message.textContent = errorMessage;
+            actions.style.display = 'flex';
+        }
+        
+        // Start verification process
+        verifyEmail(token);
+    </script>
+</body>
+</html>

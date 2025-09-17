@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game | MCCSITE</title>
+    <meta name="description" content="Play Tic Tac Toe on MCCSITE">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      .game-wrap { display: grid; place-items: center; padding: 32px 0 64px; position: relative; }
+      .game-ui { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
+      .game-status { font-weight: 700; color: var(--text); min-height: 24px; }
+      .game-btn { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elev); color: var(--text); cursor: pointer; }
+      .game-btn:hover { border-color: var(--primary); }
+      .board { display: grid; grid-template-columns: repeat(3, 100px); grid-template-rows: repeat(3, 100px); gap: 8px; }
+      .cell { display: grid; place-items: center; font-size: 42px; font-weight: 800; width: 100px; height: 100px; background: var(--bg-elev); color: var(--text); border: 1px solid var(--border); border-radius: 12px; cursor: pointer; user-select: none; transition: transform 0.05s ease, border-color 0.2s ease; }
+      .cell:hover { transform: translateY(-1px); border-color: var(--primary); }
+      .cell.winning { outline: 2px solid var(--accent); }
+      .hint { color: var(--muted); margin-top: 12px; text-align: center; }
+      .confetti-canvas { position: absolute; inset: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-content">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <span class="brand-name">MCCSITE</span>
+        </div>
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a class="btn btn-small" href="get-started.html">Get Started</a>
+          <a class="btn-pixel" href="game.html">Game</a>
+          <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+          <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
+          <div class="profile-container" id="profile-container" style="display: none;">
+            <button class="profile-btn" id="profile-btn">
+              <div class="profile-avatar" id="profile-avatar"></div>
+              <span class="profile-name" id="profile-name"></span>
+            </button>
+            <div class="profile-dropdown" id="profile-dropdown">
+              <a href="get-started.html" class="profile-dropdown-item">Dashboard</a>
+              <a href="game.html" class="profile-dropdown-item">Play Game</a>
+              <button class="profile-dropdown-item" id="profile-settings-btn">Profile Settings</button>
+              <div class="profile-dropdown-divider"></div>
+              <button class="profile-dropdown-item" id="logout-btn">Sign Out</button>
+            </div>
+          </div>
+          <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="container hero-content">
+          <h1>Tic Tac Toe</h1>
+          <p>Play against an AI. You are X. First to 3 in a row wins.</p>
+        </div>
+      </section>
+      <section class="game-wrap">
+        <canvas class="confetti-canvas" id="confetti"></canvas>
+        <div class="game-ui">
+          <span class="game-status" id="status">Your turn</span>
+          <label for="difficulty" style="color: var(--muted);">Difficulty</label>
+          <select class="game-btn" id="difficulty" aria-label="Difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard" selected>Hard</option>
+          </select>
+          <button class="game-btn" id="restart">Restart</button>
+        </div>
+        <div class="board" id="board" aria-label="Tic Tac Toe board" role="grid"></div>
+        <div class="hint">Tip: Click a square to place X. The AI plays O.</div>
+      </section>
+    </main>
+    
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal">
+      <div class="settings-content">
+        <div class="settings-header">
+          <h2 class="settings-title">Settings</h2>
+          <button class="settings-close" id="settings-close">&times;</button>
+        </div>
+        
+        <div class="settings-group">
+          <label class="settings-label">Appearance</label>
+          <div class="settings-option">
+            <span>Dark Mode</span>
+            <div class="settings-toggle" id="dark-mode-toggle"></div>
+          </div>
+        </div>
+        
+        <div class="settings-group">
+          <label class="settings-label">Game Settings</label>
+          <div class="settings-option">
+            <span>Sound Effects</span>
+            <div class="settings-toggle active" id="sound-toggle"></div>
+          </div>
+          <div class="settings-option">
+            <span>Animations</span>
+            <div class="settings-toggle active" id="animations-toggle"></div>
+          </div>
+        </div>
+        
+        <div class="settings-group">
+          <label class="settings-label">Accessibility</label>
+          <div class="settings-option">
+            <span>High Contrast</span>
+            <div class="settings-toggle" id="contrast-toggle"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <small> <span id="year"></span> MCCSITE. All rights reserved.</small>
+        <a href="#top" class="back-to-top" aria-label="Back to top"></a>
+      </div>
+    </footer>
+    <script>
+      // Footer year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Theme toggle (shared)
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = themeToggle.querySelector('.theme-icon');
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+      themeToggle.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateThemeIcon(next);
+      });
+      function updateThemeIcon(theme) { themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙'; }
+      // Tic Tac Toe Game vs AI (minimax)
+      const boardEl = document.getElementById('board');
+      const statusEl = document.getElementById('status');
+      const restartBtn = document.getElementById('restart');
+      const difficultyEl = document.getElementById('difficulty');
+      const confettiCanvas = document.getElementById('confetti');
+      const cctx = confettiCanvas.getContext('2d');
+
+      let board, human, ai, gameOverFlag, difficulty;
+      function init() {
+        fitConfettiCanvas();
+        board = Array(9).fill(null);
+        human = 'X'; ai = 'O';
+        gameOverFlag = false;
+        difficulty = difficultyEl.value || 'hard';
+        statusEl.textContent = 'Your turn';
+        renderBoard();
+      }
+
+      function fitConfettiCanvas() {
+        const wrap = document.querySelector('.game-wrap');
+        const rect = wrap.getBoundingClientRect();
+        confettiCanvas.width = rect.width;
+        confettiCanvas.height = rect.height;
+      }
+      window.addEventListener('resize', fitConfettiCanvas);
+
+      function renderBoard() {
+        boardEl.innerHTML = '';
+        board.forEach((val, i) => {
+          const cell = document.createElement('button');
+          cell.className = 'cell';
+          cell.setAttribute('role', 'gridcell');
+          cell.setAttribute('aria-label', `Cell ${i+1}`);
+          cell.textContent = val ? val : '';
+          cell.addEventListener('click', () => onHumanMove(i), { once: false });
+          boardEl.appendChild(cell);
+        });
+      }
+
+      function onHumanMove(i) {
+        if (gameOverFlag || board[i]) return;
+        board[i] = human;
+        playTone(660, 0.05);
+        updateUI();
+        const result = checkGameEnd();
+        if (result) return;
+        statusEl.textContent = "AI thinking...";
+        setTimeout(() => { // slight delay for UX
+          const move = chooseAIMove();
+          if (move !== undefined) board[move] = ai;
+          playTone(360, 0.05);
+          updateUI();
+          checkGameEnd();
+        }, 120);
+      }
+
+      function updateUI() {
+        [...boardEl.children].forEach((cell, idx) => cell.textContent = board[idx] || '');
+      }
+
+      function checkGameEnd() {
+        const wins = [
+          [0,1,2],[3,4,5],[6,7,8],
+          [0,3,6],[1,4,7],[2,5,8],
+          [0,4,8],[2,4,6]
+        ];
+        for (const [a,b,c] of wins) {
+          if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            gameOverFlag = true;
+            highlightWin([a,b,c]);
+            if (board[a] === human) {
+              statusEl.textContent = 'You win!';
+              launchConfetti();
+              playTone(880, 0.12); playTone(988, 0.12, 0.06); playTone(1175, 0.2, 0.12);
+            } else {
+              statusEl.textContent = 'AI wins!';
+              playTone(220, 0.25);
+            }
+            return board[a];
+          }
+        }
+        if (board.every(Boolean)) {
+          gameOverFlag = true;
+          statusEl.textContent = "It's a draw.";
+          playTone(520, 0.1); playTone(440, 0.1, 0.08);
+          return 'draw';
+        }
+        statusEl.textContent = 'Your turn';
+        return null;
+      }
+
+      function highlightWin(indices) {
+        indices.forEach(i => boardEl.children[i].classList.add('winning'));
+      }
+
+      // Minimax AI
+      function bestMove(state, player) {
+        let bestScore = -Infinity; let move;
+        for (let i = 0; i < 9; i++) {
+          if (!state[i]) {
+            state[i] = player;
+            const score = minimax(state, 0, false);
+            state[i] = null;
+            if (score > bestScore) { bestScore = score; move = i; }
+          }
+        }
+        return move;
+      }
+
+      const scores = { X: -10, O: 10, draw: 0 };
+      function minimax(state, depth, isMaximizing) {
+        const outcome = evaluate(state);
+        if (outcome) return scores[outcome] - depth * Math.sign(scores[outcome]);
+        if (isMaximizing) {
+          let best = -Infinity;
+          for (let i = 0; i < 9; i++) if (!state[i]) { state[i] = ai; best = Math.max(best, minimax(state, depth+1, false)); state[i] = null; }
+          return best;
+        } else {
+          let best = Infinity;
+          for (let i = 0; i < 9; i++) if (!state[i]) { state[i] = human; best = Math.min(best, minimax(state, depth+1, true)); state[i] = null; }
+          return best;
+        }
+      }
+
+      function evaluate(state) {
+        const wins = [
+          [0,1,2],[3,4,5],[6,7,8],
+          [0,3,6],[1,4,7],[2,5,8],
+          [0,4,8],[2,4,6]
+        ];
+        for (const [a,b,c] of wins) {
+          if (state[a] && state[a] === state[b] && state[a] === state[c]) return state[a];
+        }
+        if (state.every(Boolean)) return 'draw';
+        return null;
+      }
+
+      // Difficulty selection logic
+      function chooseAIMove() {
+        if (difficulty === 'hard') return bestMove(board, ai);
+        const available = board.map((v, i) => v ? null : i).filter(i => i !== null);
+        if (difficulty === 'easy') {
+          return available[Math.floor(Math.random() * available.length)];
+        }
+        // medium: 70% best move, 30% random
+        if (Math.random() < 0.7) return bestMove(board, ai);
+        return available[Math.floor(Math.random() * available.length)];
+      }
+
+      difficultyEl.addEventListener('change', () => {
+        difficulty = difficultyEl.value;
+        init();
+      });
+
+      // Confetti
+      function launchConfetti() {
+        const particles = [];
+        const colors = ['#ffd166','#06d6a0','#118ab2','#ef476f','#8338ec'];
+        const count = 180;
+        const rect = confettiCanvas.getBoundingClientRect();
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * rect.width,
+            y: -10,
+            vx: (Math.random() - 0.5) * 3,
+            vy: Math.random() * 3 + 2,
+            size: Math.random() * 4 + 2,
+            color: colors[Math.floor(Math.random()*colors.length)],
+            rotation: Math.random() * Math.PI,
+            vr: (Math.random() - 0.5) * 0.2,
+            life: 0
+          });
+        }
+        let running = true; let start;
+        function frame(ts) {
+          if (!start) start = ts;
+          const dt = (ts - start) / 16.7; start = ts;
+          cctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+          particles.forEach(p => {
+            p.vy += 0.02; // gravity
+            p.x += p.vx; p.y += p.vy; p.rotation += p.vr; p.life += dt;
+            cctx.save();
+            cctx.translate(p.x, p.y); cctx.rotate(p.rotation);
+            cctx.fillStyle = p.color;
+            cctx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+            cctx.restore();
+          });
+          // stop after few seconds
+          if (particles.every(p => p.y > confettiCanvas.height + 20) || !running) return;
+          requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+        setTimeout(() => { running = false; cctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height); }, 4000);
+      }
+
+      restartBtn.addEventListener('click', () => init());
+
+      // Simple Web Audio beeps
+      let audioCtx;
+      function ensureAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      function playTone(freq, duration, delay=0) {
+        const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+        if (settings.sound === false) return; // Respect sound setting
+        
+        ensureAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine'; osc.frequency.value = freq;
+        gain.gain.value = 0.08; // subtle volume
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        const t = audioCtx.currentTime + (delay || 0);
+        osc.start(t); osc.stop(t + duration);
+      }
+      
+      // Settings functionality
+      const settingsBtn = document.getElementById('settings-btn');
+      const settingsModal = document.getElementById('settings-modal');
+      const settingsClose = document.getElementById('settings-close');
+      const darkModeToggle = document.getElementById('dark-mode-toggle');
+      const soundToggle = document.getElementById('sound-toggle');
+      const animationsToggle = document.getElementById('animations-toggle');
+      const contrastToggle = document.getElementById('contrast-toggle');
+      
+      // Load saved settings
+      function loadSettings() {
+        const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+        
+        // Dark mode toggle
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        darkModeToggle.classList.toggle('active', isDark);
+        
+        // Sound toggle
+        soundToggle.classList.toggle('active', settings.sound !== false);
+        
+        // Animations toggle
+        animationsToggle.classList.toggle('active', settings.animations !== false);
+        
+        // Contrast toggle
+        contrastToggle.classList.toggle('active', settings.contrast === true);
+        if (settings.contrast) {
+          document.body.classList.add('high-contrast');
+        }
+      }
+      
+      // Save settings
+      function saveSettings() {
+        const settings = {
+          sound: soundToggle.classList.contains('active'),
+          animations: animationsToggle.classList.contains('active'),
+          contrast: contrastToggle.classList.contains('active')
+        };
+        localStorage.setItem('settings', JSON.stringify(settings));
+      }
+      
+      // Toggle functions
+      function toggleSetting(toggle, callback) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('active');
+          callback();
+          saveSettings();
+        });
+      }
+      
+      // Settings toggles
+      toggleSetting(darkModeToggle, () => {
+        const isDark = darkModeToggle.classList.contains('active');
+        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeIcon(isDark ? 'dark' : 'light');
+      });
+      
+      toggleSetting(soundToggle, () => {
+        // Sound setting is now respected by playTone function
+      });
+      
+      toggleSetting(animationsToggle, () => {
+        // Animation setting could be used for confetti/transitions
+      });
+      
+      toggleSetting(contrastToggle, () => {
+        document.body.classList.toggle('high-contrast', contrastToggle.classList.contains('active'));
+      });
+      
+      // Modal controls
+      settingsBtn.addEventListener('click', () => {
+        settingsModal.classList.add('open');
+      });
+      
+      settingsClose.addEventListener('click', () => {
+        settingsModal.classList.remove('open');
+      });
+      
+      settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+          settingsModal.classList.remove('open');
+        }
+      });
+      
+      // Load settings on page load
+      loadSettings();
+      
+      // Profile functionality
+      const profileContainer = document.getElementById('profile-container');
+      const profileBtn = document.getElementById('profile-btn');
+      const profileDropdown = document.getElementById('profile-dropdown');
+      const profileAvatar = document.getElementById('profile-avatar');
+      const profileName = document.getElementById('profile-name');
+      const logoutBtn = document.getElementById('logout-btn');
+      const profileSettingsBtn = document.getElementById('profile-settings-btn');
+      const signinBtn = document.getElementById('signin-btn');
+      
+      // Check if user is logged in
+      function checkAuthStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (currentUser) {
+          showProfile(currentUser);
+        } else {
+          hideProfile();
+        }
+      }
+      
+      // Show profile in header
+      function showProfile(user) {
+        profileContainer.style.display = 'flex';
+        signinBtn.style.display = 'none';
+        profileName.textContent = user.displayName || user.name;
+        profileAvatar.textContent = user.avatar || user.name.charAt(0).toUpperCase();
+      }
+      
+      // Hide profile from header
+      function hideProfile() {
+        profileContainer.style.display = 'none';
+        signinBtn.style.display = 'inline-block';
+      }
+      
+      // Toggle profile dropdown
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('open');
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!profileContainer.contains(e.target)) {
+          profileDropdown.classList.remove('open');
+        }
+      });
+      
+      // Logout functionality
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('currentUser');
+        hideProfile();
+        profileDropdown.classList.remove('open');
+        // If on get-started page, reload to show auth forms
+        if (window.location.pathname.includes('get-started')) {
+          location.reload();
+        }
+      });
+      
+      // Initialize profile on page load
+      checkAuthStatus();
+      init();
+    </script>
+  </body>
+  </html>
+
+

@@ -1,10 +1,10 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome | Your Site</title>
-    <meta name="description" content="A clean, modern opening page." >
+    <title>About | MCCSITE</title>
+    <meta name="description" content="About MCCSITE">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -18,7 +18,7 @@
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
           <a class="btn btn-small" href="get-started.html">Get Started</a>
-          <a class="btn-pixel" href="game.html">Game</a>
+          <a href="game.html">Game</a>
           <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
           <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
           <div class="profile-container" id="profile-container" style="display: none;">
@@ -42,36 +42,16 @@
       </div>
     </header>
     <main>
-      <section class="hero" id="get-started">
+      <section class="hero">
         <div class="container hero-content">
-          <h1>Welcome to my website user!</h1>
-          <p>This is a test website to demonstrate the power of AI.</p>
-          <div class="cta-group">
-            <a class="btn btn-game" href="game.html">Game</a>
-            <a class="btn btn-outline" href="about.html">Learn More</a>
-          </div>
+          <h1>About This Site</h1>
+          <p>Built as a simple, fast, and responsive landing page template.</p>
         </div>
       </section>
-      <section class="features" id="features">
-        <div class="container features-grid">
-          <article class="card">
-            <h3>About me</h3>
-            <p>This site was made by me (Mccauley)</p>
-          </article>
-          <article class="card">
-            <h3>Why this site exists?</h3>
-            <p>I made this site to demonstrate the power of AI.</p>  
-          </article>
-          <article class="card">
-            <h3>Plans for the future</h3>
-            <p>Developing more features and making this site more useful.</p>
-          </article>
-        </div>
-      </section>
-      <section class="about" id="about">
+      <section class="about">
         <div class="container">
-          <h2>Explore the site</h2>
-          <p>feel free to explore the site and see what it's all about.</p>
+          <h2>Our Purpose</h2>
+          <p>Demonstrate how to build and deploy a modern, accessible landing page quickly.</p>
         </div>
       </section>
     </main>
@@ -146,6 +126,17 @@
           </div>
         </div>
 
+        <!-- Email Confirmation -->
+        <div class="email-section">
+          <h3>Email Verification</h3>
+          <div class="email-status" id="email-status">
+            <span id="email-status-icon">📧</span>
+            <span id="email-status-text">Email verification pending</span>
+          </div>
+          <p style="margin: 0 0 12px; color: var(--muted); font-size: 14px;" id="email-address"></p>
+          <button class="email-verify-btn" id="email-verify-btn">Send Verification Email</button>
+        </div>
+
         <!-- Profile Actions -->
         <div class="profile-actions">
           <button class="profile-cancel" id="profile-cancel">Cancel</button>
@@ -161,34 +152,21 @@
         <a href="#top" class="back-to-top" aria-label="Back to top"></a>
       </div>
     </footer>
-    
-    <!-- EmailJS CDN -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();
-      
-      // Dark mode toggle functionality
       const themeToggle = document.getElementById('theme-toggle');
       const themeIcon = themeToggle.querySelector('.theme-icon');
-      
-      // Check for saved theme preference or default to dark mode
       const currentTheme = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', currentTheme);
       updateThemeIcon(currentTheme);
-      
       themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateThemeIcon(next);
       });
-      
-      function updateThemeIcon(theme) {
-        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-      }
+      function updateThemeIcon(theme) { themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙'; }
       
       // Settings functionality
       const settingsBtn = document.getElementById('settings-btn');
@@ -287,85 +265,9 @@
       const profileSettingsBtn = document.getElementById('profile-settings-btn');
       const signinBtn = document.getElementById('signin-btn');
       
-      // Profile modal elements
-      const profileModal = document.getElementById('profile-modal');
-      const profileModalClose = document.getElementById('profile-modal-close');
-      const profileCancel = document.getElementById('profile-cancel');
-      const profileSave = document.getElementById('profile-save');
-      const currentAvatarPreview = document.getElementById('current-avatar-preview');
-      const avatarOptions = document.getElementById('avatar-options');
-      const usernameInput = document.getElementById('username-input');
-      const usernameSave = document.getElementById('username-save');
-      
-      
-      // Avatar options
-      const avatarOptionsList = [
-        { emoji: '😀', name: 'Happy' },
-        { emoji: '😎', name: 'Cool' },
-        { emoji: '🤓', name: 'Nerd' },
-        { emoji: '😊', name: 'Blush' },
-        { emoji: '🥳', name: 'Party' },
-        { emoji: '🤖', name: 'Robot' },
-        { emoji: '👨', name: 'Man' },
-        { emoji: '👩', name: 'Woman' },
-        { emoji: '🧑', name: 'Person' },
-        { emoji: '👨‍💻', name: 'Developer' },
-        { emoji: '👩‍💻', name: 'Developer' },
-        { emoji: '🎮', name: 'Gamer' },
-        { emoji: '🎨', name: 'Artist' },
-        { emoji: '🎵', name: 'Musician' },
-        { emoji: '🏃', name: 'Runner' },
-        { emoji: '🚀', name: 'Rocket' },
-        { emoji: '⭐', name: 'Star' },
-        { emoji: '🔥', name: 'Fire' },
-        { emoji: '💎', name: 'Diamond' },
-        { emoji: '🌟', name: 'Star' },
-        { emoji: '🎯', name: 'Target' },
-        { emoji: '🎪', name: 'Circus' },
-        { emoji: '🎭', name: 'Theater' },
-        { emoji: '🎨', name: 'Palette' },
-        { emoji: '🎲', name: 'Dice' },
-        { emoji: '🎸', name: 'Guitar' },
-        { emoji: '🎺', name: 'Trumpet' },
-        { emoji: '🎻', name: 'Violin' },
-        { emoji: '🎹', name: 'Piano' },
-        { emoji: '🎤', name: 'Microphone' }
-      ];
-      
-      let selectedAvatar = null;
-      let currentUser = null;
-      
-      // Initialize EmailJS
-      emailjs.init("nPvHGp9gZL2jFhjsR");
-      
-      // Send welcome email function
-      async function sendWelcomeEmail(user) {
-        try {
-          const templateParams = {
-            to_email: user.email,
-            to_name: user.displayName || user.name,
-            site_name: 'MCCSITE'
-          };
-          
-          const response = await emailjs.send(
-            'service_jwb93vv',
-            'template_toyg9d9',
-            templateParams
-          );
-          
-          if (response.status === 200) {
-            console.log('Welcome email sent successfully to:', user.email);
-            showNotification('Welcome email sent! Check your inbox.', 'success');
-          }
-        } catch (error) {
-          console.error('Error sending welcome email:', error);
-          // Don't show error to user, just log it
-        }
-      }
-      
       // Check if user is logged in
       function checkAuthStatus() {
-        currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
         if (currentUser) {
           showProfile(currentUser);
         } else {
@@ -387,109 +289,6 @@
         signinBtn.style.display = 'inline-block';
       }
       
-      // Generate avatar options
-      function generateAvatarOptions() {
-        avatarOptions.innerHTML = '';
-        avatarOptionsList.forEach((avatar, index) => {
-          const option = document.createElement('div');
-          option.className = 'avatar-option';
-          option.textContent = avatar.emoji;
-          option.title = avatar.name;
-          option.addEventListener('click', () => selectAvatar(avatar, index));
-          avatarOptions.appendChild(option);
-        });
-      }
-      
-      // Select avatar
-      function selectAvatar(avatar, index) {
-        // Remove previous selection
-        document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
-        // Add selection to clicked option
-        const avatarOptions = document.querySelectorAll('.avatar-option');
-        if (avatarOptions[index]) {
-          avatarOptions[index].classList.add('selected');
-        }
-        selectedAvatar = avatar;
-        currentAvatarPreview.textContent = avatar.emoji;
-      }
-      
-      // Load user profile data
-      function loadProfileData() {
-        if (!currentUser) return;
-        
-        // Load username
-        usernameInput.value = currentUser.displayName || currentUser.name;
-        
-        // Load avatar
-        if (currentUser.avatar) {
-          const avatarIndex = avatarOptionsList.findIndex(a => a.emoji === currentUser.avatar);
-          if (avatarIndex !== -1) {
-            selectAvatar(avatarOptionsList[avatarIndex], avatarIndex);
-          }
-        } else {
-          currentAvatarPreview.textContent = currentUser.name.charAt(0).toUpperCase();
-        }
-        
-      }
-      
-      
-      // Show notification
-      function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 16px 24px;
-          border-radius: 8px;
-          color: white;
-          font-weight: 600;
-          z-index: 10000;
-          animation: slideIn 0.3s ease;
-          background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-          notification.style.animation = 'slideOut 0.3s ease';
-          setTimeout(() => notification.remove(), 300);
-        }, 3000);
-      }
-      
-      // Save profile changes
-      function saveProfileChanges() {
-        if (!currentUser) return;
-        
-        const newDisplayName = usernameInput.value.trim();
-        const newAvatar = selectedAvatar ? selectedAvatar.emoji : null;
-        
-        // Update user data
-        currentUser.displayName = newDisplayName;
-        if (newAvatar) {
-          currentUser.avatar = newAvatar;
-        }
-        
-        // Save to localStorage
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        
-        // Update all users array
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const userIndex = users.findIndex(u => u.id === currentUser.id);
-        if (userIndex !== -1) {
-          users[userIndex] = currentUser;
-          localStorage.setItem('users', JSON.stringify(users));
-        }
-        
-        // Update header display
-        showProfile(currentUser);
-        
-        // Close modal
-        profileModal.classList.remove('open');
-        
-        showNotification('Profile updated successfully!', 'success');
-      }
-      
       // Toggle profile dropdown
       profileBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -502,44 +301,6 @@
           profileDropdown.classList.remove('open');
         }
       });
-      
-      // Profile settings modal
-      profileSettingsBtn.addEventListener('click', () => {
-        profileDropdown.classList.remove('open');
-        generateAvatarOptions();
-        loadProfileData();
-        profileModal.classList.add('open');
-      });
-      
-      // Profile modal controls
-      profileModalClose.addEventListener('click', () => {
-        profileModal.classList.remove('open');
-      });
-      
-      profileCancel.addEventListener('click', () => {
-        profileModal.classList.remove('open');
-      });
-      
-      profileSave.addEventListener('click', saveProfileChanges);
-      
-      // Close profile modal when clicking outside
-      profileModal.addEventListener('click', (e) => {
-        if (e.target === profileModal) {
-          profileModal.classList.remove('open');
-        }
-      });
-      
-      // Username save
-      usernameSave.addEventListener('click', () => {
-        const newName = usernameInput.value.trim();
-        if (newName && newName !== currentUser.displayName) {
-          currentUser.displayName = newName;
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
-          showProfile(currentUser);
-          showNotification('Username updated!', 'success');
-        }
-      });
-      
       
       // Logout functionality
       logoutBtn.addEventListener('click', () => {
@@ -558,3 +319,5 @@
     </script>
   </body>
 </html>
+
+

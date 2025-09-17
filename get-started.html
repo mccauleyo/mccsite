@@ -1,11 +1,35 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome | Your Site</title>
-    <meta name="description" content="A clean, modern opening page." >
+    <title>Get Started | MCCSITE</title>
+    <meta name="description" content="Get started with MCCSITE">
     <link rel="stylesheet" href="styles.css">
+    <style>
+      /* Notification animations */
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
   <body>
     <header class="site-header">
@@ -18,7 +42,7 @@
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
           <a class="btn btn-small" href="get-started.html">Get Started</a>
-          <a class="btn-pixel" href="game.html">Game</a>
+          <a href="game.html">Game</a>
           <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
           <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
           <div class="profile-container" id="profile-container" style="display: none;">
@@ -42,36 +66,72 @@
       </div>
     </header>
     <main>
-      <section class="hero" id="get-started">
+      <section class="hero">
         <div class="container hero-content">
-          <h1>Welcome to my website user!</h1>
-          <p>This is a test website to demonstrate the power of AI.</p>
-          <div class="cta-group">
-            <a class="btn btn-game" href="game.html">Game</a>
-            <a class="btn btn-outline" href="about.html">Learn More</a>
-          </div>
+          <h1>Get Started</h1>
+          <p>Create an account or sign in to access your dashboard.</p>
         </div>
       </section>
-      <section class="features" id="features">
-        <div class="container features-grid">
-          <article class="card">
-            <h3>About me</h3>
-            <p>This site was made by me (Mccauley)</p>
-          </article>
-          <article class="card">
-            <h3>Why this site exists?</h3>
-            <p>I made this site to demonstrate the power of AI.</p>  
-          </article>
-          <article class="card">
-            <h3>Plans for the future</h3>
-            <p>Developing more features and making this site more useful.</p>
-          </article>
-        </div>
-      </section>
-      <section class="about" id="about">
+      
+      <section class="auth-section">
         <div class="container">
-          <h2>Explore the site</h2>
-          <p>feel free to explore the site and see what it's all about.</p>
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="signin-tab">Sign In</button>
+            <button class="auth-tab" id="signup-tab">Sign Up</button>
+          </div>
+          
+          <div class="auth-forms">
+            <!-- Sign In Form -->
+            <form class="auth-form active" id="signin-form">
+              <h2>Welcome Back</h2>
+              <div class="form-group">
+                <label for="signin-email">Email</label>
+                <input type="email" id="signin-email" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="signin-password">Password</label>
+                <input type="password" id="signin-password" name="password" required>
+              </div>
+              <div class="form-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="remember">
+                  <span class="checkmark"></span>
+                  Remember me
+                </label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+              </div>
+              <button type="submit" class="btn btn-game">Sign In</button>
+            </form>
+            
+            <!-- Sign Up Form -->
+            <form class="auth-form" id="signup-form">
+              <h2>Create Account</h2>
+              <div class="form-group">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" name="email" required>
+              </div>
+              <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" required>
+              </div>
+              <div class="form-group">
+                <label for="signup-confirm">Confirm Password</label>
+                <input type="password" id="signup-confirm" name="confirmPassword" required>
+              </div>
+              <div class="form-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="terms" required>
+                  <span class="checkmark"></span>
+                  I agree to the <a href="#" class="terms-link">Terms of Service</a>
+                </label>
+              </div>
+              <button type="submit" class="btn btn-game">Create Account</button>
+            </form>
+          </div>
         </div>
       </section>
     </main>
@@ -153,7 +213,6 @@
         </div>
       </div>
     </div>
-
     
     <footer class="site-footer">
       <div class="container footer-content">
@@ -167,28 +226,19 @@
     
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();
-      
-      // Dark mode toggle functionality
       const themeToggle = document.getElementById('theme-toggle');
       const themeIcon = themeToggle.querySelector('.theme-icon');
-      
-      // Check for saved theme preference or default to dark mode
       const currentTheme = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', currentTheme);
       updateThemeIcon(currentTheme);
-      
       themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateThemeIcon(next);
       });
-      
-      function updateThemeIcon(theme) {
-        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-      }
+      function updateThemeIcon(theme) { themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙'; }
       
       // Settings functionality
       const settingsBtn = document.getElementById('settings-btn');
@@ -287,6 +337,54 @@
       const profileSettingsBtn = document.getElementById('profile-settings-btn');
       const signinBtn = document.getElementById('signin-btn');
       
+      // Check if user is logged in
+      function checkAuthStatus() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (currentUser) {
+          showProfile(currentUser);
+        } else {
+          hideProfile();
+        }
+      }
+      
+      // Show profile in header
+      function showProfile(user) {
+        profileContainer.style.display = 'flex';
+        signinBtn.style.display = 'none';
+        profileName.textContent = user.displayName || user.name;
+        profileAvatar.textContent = user.avatar || user.name.charAt(0).toUpperCase();
+      }
+      
+      // Hide profile from header
+      function hideProfile() {
+        profileContainer.style.display = 'none';
+        signinBtn.style.display = 'inline-block';
+      }
+      
+      // Toggle profile dropdown
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        profileDropdown.classList.toggle('open');
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!profileContainer.contains(e.target)) {
+          profileDropdown.classList.remove('open');
+        }
+      });
+      
+      // Logout functionality
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('currentUser');
+        hideProfile();
+        profileDropdown.classList.remove('open');
+        // If on get-started page, reload to show auth forms
+        if (window.location.pathname.includes('get-started')) {
+          location.reload();
+        }
+      });
+      
       // Profile modal elements
       const profileModal = document.getElementById('profile-modal');
       const profileModalClose = document.getElementById('profile-modal-close');
@@ -296,7 +394,6 @@
       const avatarOptions = document.getElementById('avatar-options');
       const usernameInput = document.getElementById('username-input');
       const usernameSave = document.getElementById('username-save');
-      
       
       // Avatar options
       const avatarOptionsList = [
@@ -334,58 +431,6 @@
       
       let selectedAvatar = null;
       let currentUser = null;
-      
-      // Initialize EmailJS
-      emailjs.init("nPvHGp9gZL2jFhjsR");
-      
-      // Send welcome email function
-      async function sendWelcomeEmail(user) {
-        try {
-          const templateParams = {
-            to_email: user.email,
-            to_name: user.displayName || user.name,
-            site_name: 'MCCSITE'
-          };
-          
-          const response = await emailjs.send(
-            'service_jwb93vv',
-            'template_toyg9d9',
-            templateParams
-          );
-          
-          if (response.status === 200) {
-            console.log('Welcome email sent successfully to:', user.email);
-            showNotification('Welcome email sent! Check your inbox.', 'success');
-          }
-        } catch (error) {
-          console.error('Error sending welcome email:', error);
-          // Don't show error to user, just log it
-        }
-      }
-      
-      // Check if user is logged in
-      function checkAuthStatus() {
-        currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-        if (currentUser) {
-          showProfile(currentUser);
-        } else {
-          hideProfile();
-        }
-      }
-      
-      // Show profile in header
-      function showProfile(user) {
-        profileContainer.style.display = 'flex';
-        signinBtn.style.display = 'none';
-        profileName.textContent = user.displayName || user.name;
-        profileAvatar.textContent = user.avatar || user.name.charAt(0).toUpperCase();
-      }
-      
-      // Hide profile from header
-      function hideProfile() {
-        profileContainer.style.display = 'none';
-        signinBtn.style.display = 'inline-block';
-      }
       
       // Generate avatar options
       function generateAvatarOptions() {
@@ -429,32 +474,6 @@
         } else {
           currentAvatarPreview.textContent = currentUser.name.charAt(0).toUpperCase();
         }
-        
-      }
-      
-      
-      // Show notification
-      function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 16px 24px;
-          border-radius: 8px;
-          color: white;
-          font-weight: 600;
-          z-index: 10000;
-          animation: slideIn 0.3s ease;
-          background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-        `;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-          notification.style.animation = 'slideOut 0.3s ease';
-          setTimeout(() => notification.remove(), 300);
-        }, 3000);
       }
       
       // Save profile changes
@@ -487,27 +506,34 @@
         // Close modal
         profileModal.classList.remove('open');
         
-        showNotification('Profile updated successfully!', 'success');
+        // Show success notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 16px 24px;
+          border-radius: 8px;
+          color: white;
+          font-weight: 600;
+          z-index: 10000;
+          background: #10b981;
+          animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = 'Profile updated successfully!';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => notification.remove(), 300);
+        }, 3000);
       }
-      
-      // Toggle profile dropdown
-      profileBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        profileDropdown.classList.toggle('open');
-      });
-      
-      // Close dropdown when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!profileContainer.contains(e.target)) {
-          profileDropdown.classList.remove('open');
-        }
-      });
       
       // Profile settings modal
       profileSettingsBtn.addEventListener('click', () => {
         profileDropdown.classList.remove('open');
-        generateAvatarOptions();
         loadProfileData();
+        generateAvatarOptions();
         profileModal.classList.add('open');
       });
       
@@ -536,25 +562,266 @@
           currentUser.displayName = newName;
           localStorage.setItem('currentUser', JSON.stringify(currentUser));
           showProfile(currentUser);
-          showNotification('Username updated!', 'success');
-        }
-      });
-      
-      
-      // Logout functionality
-      logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('currentUser');
-        hideProfile();
-        profileDropdown.classList.remove('open');
-        // If on get-started page, reload to show auth forms
-        if (window.location.pathname.includes('get-started')) {
-          location.reload();
+          
+          // Show success notification
+          const notification = document.createElement('div');
+          notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            background: #10b981;
+            animation: slideIn 0.3s ease;
+          `;
+          notification.textContent = 'Username updated!';
+          document.body.appendChild(notification);
+          
+          setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+          }, 3000);
         }
       });
       
       // Initialize profile on page load
       checkAuthStatus();
       
+      // Authentication functionality
+      const signinTab = document.getElementById('signin-tab');
+      const signupTab = document.getElementById('signup-tab');
+      const signinForm = document.getElementById('signin-form');
+      const signupForm = document.getElementById('signup-form');
+      
+      // Tab switching
+      signinTab.addEventListener('click', () => {
+        signinTab.classList.add('active');
+        signupTab.classList.remove('active');
+        signinForm.classList.add('active');
+        signupForm.classList.remove('active');
+      });
+      
+      signupTab.addEventListener('click', () => {
+        signupTab.classList.add('active');
+        signinTab.classList.remove('active');
+        signupForm.classList.add('active');
+        signinForm.classList.remove('active');
+      });
+      
+      // Real Authentication System
+      class AuthManager {
+        constructor() {
+          this.users = JSON.parse(localStorage.getItem('users') || '[]');
+          this.currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+          this.init();
+        }
+        
+        init() {
+          if (this.currentUser) {
+            this.showDashboard();
+          }
+        }
+        
+        // User registration
+        register(name, email, password) {
+          // Check if user already exists
+          if (this.users.find(user => user.email === email)) {
+            throw new Error('User already exists with this email');
+          }
+          
+          // Create new user
+          const newUser = {
+            id: Date.now().toString(),
+            name,
+            email,
+            password: this.hashPassword(password),
+            createdAt: new Date().toISOString()
+          };
+          
+          this.users.push(newUser);
+          localStorage.setItem('users', JSON.stringify(this.users));
+          return newUser;
+        }
+        
+        // User login
+        login(email, password) {
+          const user = this.users.find(u => u.email === email);
+          if (!user || !this.verifyPassword(password, user.password)) {
+            throw new Error('Invalid email or password');
+          }
+          
+          this.currentUser = user;
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          return user;
+        }
+        
+        // User logout
+        logout() {
+          this.currentUser = null;
+          localStorage.removeItem('currentUser');
+          this.showAuthForms();
+        }
+        
+        // Password hashing (simple for demo - use bcrypt in production)
+        hashPassword(password) {
+          return btoa(password + 'salt'); // Simple encoding
+        }
+        
+        verifyPassword(password, hash) {
+          return this.hashPassword(password) === hash;
+        }
+        
+        // Show dashboard
+        showDashboard() {
+          document.querySelector('.auth-section').innerHTML = `
+            <div class="container">
+              <div class="dashboard">
+                <h2>Welcome back, ${this.currentUser.name}!</h2>
+                <div class="user-info">
+                  <p><strong>Email:</strong> ${this.currentUser.email}</p>
+                  <p><strong>Member since:</strong> ${new Date(this.currentUser.createdAt).toLocaleDateString()}</p>
+                </div>
+                <div class="dashboard-actions">
+                  <button class="btn btn-game" onclick="location.href='game.html'">Play Game</button>
+                  <button class="btn btn-outline" onclick="authManager.logout()">Sign Out</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        
+        // Show auth forms
+        showAuthForms() {
+          location.reload(); // Simple reload to show forms
+        }
+        
+        // Show error message
+        showError(message) {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error-message';
+          errorDiv.textContent = message;
+          errorDiv.style.cssText = `
+            background: #ef4444;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+          `;
+          
+          const form = document.querySelector('.auth-form.active');
+          form.insertBefore(errorDiv, form.firstChild);
+          
+          setTimeout(() => errorDiv.remove(), 5000);
+        }
+      }
+      
+      // Initialize EmailJS
+      emailjs.init("nPvHGp9gZL2jFhjsR");
+      
+      // Send welcome email function
+      async function sendWelcomeEmail(user) {
+        try {
+          const templateParams = {
+            to_email: user.email,
+            to_name: user.displayName || user.name,
+            site_name: 'MCCSITE'
+          };
+          
+          const response = await emailjs.send(
+            'service_jwb93vv',
+            'template_toyg9d9',
+            templateParams
+          );
+          
+          if (response.status === 200) {
+            console.log('Welcome email sent successfully to:', user.email);
+            // Show success notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+              position: fixed;
+              top: 20px;
+              right: 20px;
+              padding: 16px 24px;
+              border-radius: 8px;
+              color: white;
+              font-weight: 600;
+              z-index: 10000;
+              background: #10b981;
+              animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = 'Welcome email sent! Check your inbox.';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+              notification.style.animation = 'slideOut 0.3s ease';
+              setTimeout(() => notification.remove(), 300);
+            }, 3000);
+          }
+        } catch (error) {
+          console.error('Error sending welcome email:', error);
+          // Don't show error to user, just log it
+        }
+      }
+      
+      // Initialize auth manager
+      const authManager = new AuthManager();
+      
+      // Form validation and submission
+      signinForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('signin-email').value;
+        const password = document.getElementById('signin-password').value;
+        
+        try {
+          authManager.login(email, password);
+          authManager.showDashboard();
+        } catch (error) {
+          authManager.showError(error.message);
+        }
+      });
+      
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm').value;
+        const terms = document.querySelector('input[name="terms"]').checked;
+        
+        // Validation
+        if (password !== confirmPassword) {
+          authManager.showError('Passwords do not match!');
+          return;
+        }
+        
+        if (password.length < 6) {
+          authManager.showError('Password must be at least 6 characters long');
+          return;
+        }
+        
+        if (!terms) {
+          authManager.showError('Please agree to the Terms of Service');
+          return;
+        }
+        
+        try {
+          const user = authManager.register(name, email, password);
+          authManager.currentUser = user;
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          authManager.showDashboard();
+          
+          // Send welcome email
+          sendWelcomeEmail(user);
+        } catch (error) {
+          authManager.showError(error.message);
+        }
+      });
     </script>
   </body>
 </html>
+
+

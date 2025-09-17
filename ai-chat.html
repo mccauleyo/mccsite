@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - MCCSITE</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* AI Character Styles */
+        .ai-character {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: characterFloat 3s ease-in-out infinite;
+        }
+
+        .character-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character-avatar::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        @keyframes characterFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .character-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .character-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-elev);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Enhanced Chat Interface */
+        .ai-chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .ai-chat-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+
+        .ai-chat-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .ai-chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 30px;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ai-message {
+            display: flex;
+            gap: 15px;
+            animation: messageSlide 0.4s ease;
+        }
+
+        .ai-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .ai-message.bot .message-avatar {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+        }
+
+        .ai-message.user .message-avatar {
+            background: var(--muted);
+            color: var(--text);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .ai-message.bot .message-content {
+            background: var(--bg-elev);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .ai-message.user .message-content {
+            background: var(--primary);
+            color: white;
+        }
+
+        .ai-typing {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0.7;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+            animation: typingDot 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingDot {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .ai-input-container {
+            padding: 30px;
+            background: var(--card);
+            border-top: 1px solid var(--border);
+        }
+
+        .ai-input-wrapper {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .ai-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            resize: none;
+            max-height: 120px;
+            min-height: 50px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .ai-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .ai-send {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .ai-send:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .ai-send:disabled {
+            background: var(--muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ai-suggestion {
+            padding: 10px 16px;
+            background: var(--bg-elev);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            font-size: 14px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-suggestion:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .character-mood {
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        /* Welcome message styling */
+        .welcome-message {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--accent-rgb), 0.1));
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-message h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+        }
+
+        .welcome-message p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .ai-character {
+                margin-bottom: 20px;
+            }
+            
+            .character-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+            
+            .character-name {
+                font-size: 20px;
+            }
+            
+            .ai-chat-messages {
+                height: 400px;
+                padding: 20px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+                font-size: 14px;
+            }
+            
+            .ai-input-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+      <div class="container header-content">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <span class="brand-name">MCCSITE</span>
+        </div>
+        <nav class="nav">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a class="btn btn-small" href="get-started.html">Get Started</a>
+          <a class="btn-pixel" href="game.html">Game</a>
+          <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+          <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
+          <div class="profile-container" id="profile-container" style="display: none;">
+            <button class="profile-btn" id="profile-btn">
+              <div class="profile-avatar" id="profile-avatar"></div>
+              <span class="profile-name" id="profile-name"></span>
+            </button>
+            <div class="profile-dropdown" id="profile-dropdown">
+              <a href="get-started.html" class="profile-dropdown-item">Dashboard</a>
+              <a href="game.html" class="profile-dropdown-item">Play Game</a>
+              <button class="profile-dropdown-item" id="profile-settings-btn">Profile Settings</button>
+              <div class="profile-dropdown-divider"></div>
+              <button class="profile-dropdown-item" id="logout-btn">Sign Out</button>
+            </div>
+          </div>
+          <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- AI Character Section -->
+            <div class="ai-character">
+                <div class="character-avatar" id="character-avatar">🤖</div>
+                <div class="character-name">Mccauley - Your AI Assistant</div>
+                <div class="character-status">
+                    <div class="status-dot"></div>
+                    <span>Online & Ready to Help</span>
+                </div>
+                <div class="character-mood" id="character-mood">Feeling helpful today! 😊</div>
+            </div>
+
+            <!-- Welcome Message -->
+            <div class="welcome-message">
+                <h3>👋 Welcome to AI Chat!</h3>
+                <p>I'm Mccauley, your personal AI assistant. I can help you with website features, game tips, profile customization, and much more. What would you like to know?</p>
+            </div>
+
+            <!-- Chat Interface -->
+            <div class="ai-chat-container">
+                <div class="ai-chat-header">
+                    <h2 class="ai-chat-title">Chat with Mccauley</h2>
+                    <p class="ai-chat-subtitle">Your intelligent assistant for all things MCCSITE</p>
+                </div>
+                
+                <div class="ai-chat-messages" id="ai-chat-messages">
+                    <div class="ai-message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            Hello! I'm Mccauley, your AI assistant! 👋 I'm here to help you with anything related to MCCSITE. You can ask me about the game, profile settings, website features, or just chat! What's on your mind?
+                        </div>
+                    </div>
+                    
+                    <div class="ai-suggestions" id="ai-suggestions">
+                        <div class="ai-suggestion" data-message="What can you help me with?">What can you help me with?</div>
+                        <div class="ai-suggestion" data-message="Tell me about the Tic Tac Toe game">Tell me about the Tic Tac Toe game</div>
+                        <div class="ai-suggestion" data-message="How do I customize my profile?">How do I customize my profile?</div>
+                        <div class="ai-suggestion" data-message="What settings are available?">What settings are available?</div>
+                        <div class="ai-suggestion" data-message="Tell me a joke">Tell me a joke</div>
+                        <div class="ai-suggestion" data-message="What's your favorite feature?">What's your favorite feature?</div>
+                    </div>
+                </div>
+                
+                <div class="ai-input-container">
+                    <div class="ai-input-wrapper">
+                        <textarea 
+                            class="ai-input" 
+                            id="ai-input" 
+                            placeholder="Type your message to Alex..."
+                            rows="1"
+                        ></textarea>
+                        <button class="ai-send" id="ai-send">
+                            ➤
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h3 class="settings-title">Settings</h3>
+                <button class="settings-close" id="settings-close">×</button>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">
+                    <span>Dark Mode</span>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">
+                    <span>Sound Effects</span>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="sound-toggle">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">
+                    <span>Animations</span>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="animations-toggle">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="settings-label">
+                    <span>High Contrast</span>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="high-contrast-toggle">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h3 class="profile-modal-title">Profile Settings</h3>
+                <button class="profile-modal-close" id="profile-modal-close">×</button>
+            </div>
+            
+            <div class="avatar-section">
+                <h4>Choose Avatar</h4>
+                <div class="current-avatar">
+                    <div class="current-avatar-preview" id="current-avatar-preview">👤</div>
+                    <p>Current Avatar</p>
+                </div>
+                <div class="avatar-options" id="avatar-options">
+                    <!-- Avatar options will be generated here -->
+                </div>
+            </div>
+            
+            <div class="username-section">
+                <h4>Display Name</h4>
+                <div class="username-editor">
+                    <input type="text" class="username-input" id="username-input" placeholder="Enter your display name">
+                    <button class="username-save" id="username-save">Save</button>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button class="profile-cancel" id="profile-cancel">Cancel</button>
+                <button class="profile-save" id="profile-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <small> <span id="year"></span> MCCSITE. All rights reserved.</small>
+            <a href="#top" class="back-to-top" aria-label="Back to top"></a>
+        </div>
+    </footer>
+
+    <script>
+        // Theme and Settings Management
+        const themeToggle = document.getElementById('theme-toggle');
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsClose = document.getElementById('settings-close');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const soundToggle = document.getElementById('sound-toggle');
+        const animationsToggle = document.getElementById('animations-toggle');
+        const highContrastToggle = document.getElementById('high-contrast-toggle');
+
+        // Load saved settings
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+            
+            // Dark mode toggle
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            darkModeToggle.classList.toggle('active', isDark);
+            
+            // Sound toggle
+            soundToggle.classList.toggle('active', settings.sound !== false);
+            
+            // Animations toggle
+            animationsToggle.classList.toggle('active', settings.animations !== false);
+            
+            // Contrast toggle
+            highContrastToggle.classList.toggle('active', settings.contrast === true);
+            if (settings.contrast) {
+                document.body.classList.add('high-contrast');
+            }
+        }
+
+        // Save settings
+        function saveSettings() {
+            const settings = {
+                sound: soundToggle.classList.contains('active'),
+                animations: animationsToggle.classList.contains('active'),
+                contrast: highContrastToggle.classList.contains('active')
+            };
+            
+            localStorage.setItem('settings', JSON.stringify(settings));
+        }
+
+        // Event listeners for settings
+        settingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+        });
+
+        settingsClose.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            darkModeToggle.classList.toggle('active', !isDark);
+        });
+
+        // Settings toggles
+        [soundToggle, animationsToggle, highContrastToggle].forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+                saveSettings();
+            });
+        });
+
+        // Close modal when clicking outside
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+
+        // Profile Management
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const profileContainer = document.getElementById('profile-container');
+        const signinBtn = document.getElementById('signin-btn');
+        const profileModal = document.getElementById('profile-modal');
+        const profileModalClose = document.getElementById('profile-modal-close');
+        const profileSettingsBtn = document.getElementById('profile-settings-btn');
+        const profileCancel = document.getElementById('profile-cancel');
+        const profileSave = document.getElementById('profile-save');
+        const currentAvatarPreview = document.getElementById('current-avatar-preview');
+        const avatarOptions = document.getElementById('avatar-options');
+        const usernameInput = document.getElementById('username-input');
+        const usernameSave = document.getElementById('username-save');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Check authentication status
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                showProfile(currentUser);
+            } else {
+                hideProfile();
+            }
+        }
+
+        // Show profile elements
+        function showProfile(user) {
+            profileContainer.style.display = 'block';
+            signinBtn.style.display = 'none';
+            
+            // Update profile display
+            const profileAvatar = document.getElementById('profile-avatar');
+            const profileName = document.getElementById('profile-name');
+            
+            console.log('User object:', user);
+            console.log('Username field:', user.username);
+            console.log('Email field:', user.email);
+            console.log('All user fields:', Object.keys(user));
+            
+            if (profileAvatar && profileName) {
+                profileAvatar.textContent = user.avatar || '👤';
+                // Use the same logic as other pages
+                profileName.textContent = user.displayName || user.name || 'User';
+                console.log('Setting profile name to:', user.displayName || user.name || 'User');
+            }
+        }
+
+        // Hide profile elements
+        function hideProfile() {
+            profileContainer.style.display = 'none';
+            signinBtn.style.display = 'inline-block';
+        }
+
+        // Profile dropdown toggle
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.profile-container')) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Profile settings modal
+        profileSettingsBtn.addEventListener('click', () => {
+            profileModal.style.display = 'flex';
+            generateAvatarOptions();
+            loadProfileData();
+        });
+
+        profileModalClose.addEventListener('click', () => {
+            profileModal.style.display = 'none';
+        });
+
+        profileCancel.addEventListener('click', () => {
+            profileModal.style.display = 'none';
+        });
+
+        // Generate avatar options
+        function generateAvatarOptions() {
+            const avatars = ['👤', '😊', '😎', '🤖', '🎮', '🚀', '⭐', '🔥', '💎', '🌟', '🎯', '🎨', '🎪', '🎭', '🎸', '🎺', '🎻', '🥁', '🎤', '🎧', '🎬', '🎨', '🎭', '🎪', '🎯', '🎲', '🎳', '🎮', '🕹️', '🎰'];
+            
+            avatarOptions.innerHTML = '';
+            avatars.forEach((avatar, index) => {
+                const avatarOption = document.createElement('div');
+                avatarOption.className = 'avatar-option';
+                avatarOption.textContent = avatar;
+                avatarOption.addEventListener('click', () => selectAvatar(index, avatar));
+                avatarOptions.appendChild(avatarOption);
+            });
+        }
+
+        // Select avatar
+        function selectAvatar(index, avatar) {
+            // Remove previous selection
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked avatar
+            if (avatarOptions.children[index]) {
+                avatarOptions.children[index].classList.add('selected');
+            }
+            
+            currentAvatarPreview.textContent = avatar;
+        }
+
+        // Load profile data
+        function loadProfileData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                usernameInput.value = currentUser.username || '';
+                currentAvatarPreview.textContent = currentUser.avatar || '👤';
+            }
+        }
+
+        // Save profile changes
+        function saveProfileChanges() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                const selectedAvatar = document.querySelector('.avatar-option.selected');
+                const newAvatar = selectedAvatar ? selectedAvatar.textContent : currentUser.avatar;
+                const newUsername = usernameInput.value.trim() || currentUser.username;
+                
+                currentUser.avatar = newAvatar;
+                currentUser.username = newUsername;
+                
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Update profile display
+                showProfile(currentUser);
+                
+                // Show success message
+                showNotification('Profile updated successfully!', 'success');
+                
+                profileModal.style.display = 'none';
+            }
+        }
+
+        profileSave.addEventListener('click', saveProfileChanges);
+
+        // Username save
+        usernameSave.addEventListener('click', () => {
+            const newUsername = usernameInput.value.trim();
+            if (newUsername) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    currentUser.username = newUsername;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showProfile(currentUser);
+                    showNotification('Username updated!', 'success');
+                }
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            hideProfile();
+            showNotification('Signed out successfully!', 'success');
+            
+            // Redirect to get-started page if on a protected page
+            if (window.location.pathname.includes('get-started')) {
+                location.reload();
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize profile on page load
+        checkAuthStatus();
+
+        // AI Chatbot functionality
+        const aiInput = document.getElementById('ai-input');
+        const aiSend = document.getElementById('ai-send');
+        const aiMessages = document.getElementById('ai-chat-messages');
+        const aiSuggestions = document.getElementById('ai-suggestions');
+        const characterAvatar = document.getElementById('character-avatar');
+        const characterMood = document.getElementById('character-mood');
+
+        // AI responses database with personality
+        const aiResponses = {
+            'what can you help me with': 'I can help you with tons of things! 🚀\n\n• **Website Features** - Explain how everything works\n• **Game Tips** - Tic Tac Toe strategies and difficulty levels\n• **Profile Customization** - Avatar selection and username changes\n• **Settings Help** - Dark mode, sound effects, animations\n• **General Questions** - Anything about MCCSITE!\n\nI love helping users discover all the cool features! What interests you most?',
+            
+            'tell me about the tic tac toe game': 'Oh, the Tic Tac Toe game is absolutely fantastic! 🎮\n\n**Game Features:**\n• Play against an intelligent AI opponent\n• Choose from Easy, Medium, or Hard difficulty\n• Beautiful sound effects and animations\n• Confetti celebration when you win! 🎉\n• Responsive design for any device\n\n**Pro Tips:**\n• Start with Easy to learn the AI patterns\n• Medium is perfect for a balanced challenge\n• Hard mode will really test your skills!\n\nClick the "Game" button in the navigation to start playing!',
+            
+            'how do i customize my profile': 'Profile customization is super fun! 👤✨\n\n**Step-by-step:**\n1. **Sign in** to your account (if you haven\'t already)\n2. **Click your profile** in the top-right corner\n3. **Select "Profile Settings"** from the dropdown\n4. **Choose your avatar** from 30+ emoji options\n5. **Edit your display name** to something personal\n6. **Save your changes** and see them everywhere!\n\nYour custom profile will appear across all pages. I love seeing everyone\'s unique style!',
+            
+            'what settings are available': 'We have some awesome settings to personalize your experience! ⚙️\n\n**Available Settings:**\n• **Dark/Light Mode** - Switch between themes\n• **Sound Effects** - Toggle game and UI sounds\n• **Animations** - Enable/disable smooth transitions\n• **High Contrast** - Better accessibility support\n\n**How to Access:**\nClick the gear icon (⚙️) in the navigation bar. All settings save automatically!',
+            
+            'tell me a joke': 'Why don\'t scientists trust atoms? Because they make up everything! 😄\n\nOr here\'s a coding one: Why do programmers prefer dark mode? Because light attracts bugs! 🐛\n\nI love jokes! Got any good ones to share with me?',
+            
+            'what\'s your favorite feature': 'That\'s such a great question! 🤔\n\nI absolutely love the **Tic Tac Toe game** because:\n• It brings people together for fun competition\n• The AI gets smarter with each difficulty level\n• The confetti celebration makes wins feel amazing! 🎉\n• It\'s a perfect break from browsing\n\nBut I also adore the **profile customization** - seeing everyone\'s unique avatars and usernames makes the site feel so personal!\n\nWhat\'s YOUR favorite feature?',
+            
+            'hello': 'Hello there! 👋 It\'s so nice to meet you! I\'m Mccauley, and I\'m absolutely thrilled to chat with you today. How are you doing?',
+            
+            'hi': 'Hi! 😊 Welcome to our chat! I\'m Mccauley, your AI assistant. I\'m here to help with anything you need about MCCSITE. What brings you here today?',
+            
+            'help': 'I\'m here to help! 🤝\n\n**Quick Start:**\n• Ask me about any website feature\n• Try the suggestion buttons below\n• Type your own questions\n• I love chatting about the game!\n\n**Popular Topics:**\n• "Tell me about the game"\n• "How do I customize my profile?"\n• "What settings are available?"\n• "Tell me a joke"\n\nWhat would you like to know?',
+            
+            'thanks': 'You\'re so welcome! 😊 I absolutely love helping out! Is there anything else I can do for you?',
+            
+            'thank you': 'You\'re very welcome! 😊 It makes me so happy to be helpful! Feel free to ask me anything else anytime!'
+        };
+
+        // Character mood changes
+        const moods = [
+            'Feeling helpful today! 😊',
+            'Ready to assist! 🚀',
+            'Excited to chat! 💬',
+            'In a great mood! 😄',
+            'Feeling curious! 🤔',
+            'Happy to help! 😊',
+            'Feeling smart today! 🧠',
+            'Ready for questions! ❓'
+        ];
+
+        function updateCharacterMood() {
+            const randomMood = moods[Math.floor(Math.random() * moods.length)];
+            characterMood.textContent = randomMood;
+        }
+
+        // Auto-resize textarea
+        aiInput.addEventListener('input', () => {
+            aiInput.style.height = 'auto';
+            aiInput.style.height = Math.min(aiInput.scrollHeight, 120) + 'px';
+        });
+
+        // Send message function
+        function sendMessage(message) {
+            if (!message.trim()) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            
+            // Clear input
+            aiInput.value = '';
+            aiInput.style.height = 'auto';
+            
+            // Hide suggestions after first message
+            aiSuggestions.style.display = 'none';
+            
+            // Update character mood
+            updateCharacterMood();
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Generate AI response
+            setTimeout(() => {
+                hideTypingIndicator();
+                const response = generateResponse(message);
+                addMessage(response, 'bot');
+            }, 1000 + Math.random() * 1000);
+        }
+
+        // Add message to chat
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `ai-message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = sender === 'bot' ? '🤖' : '👤';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerHTML = content.replace(/\n/g, '<br>');
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(messageContent);
+            
+            aiMessages.appendChild(messageDiv);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-typing';
+            typingDiv.id = 'typing-indicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = '🤖';
+            
+            const dots = document.createElement('div');
+            dots.className = 'typing-dots';
+            dots.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(dots);
+            aiMessages.appendChild(typingDiv);
+            aiMessages.scrollTop = aiMessages.scrollHeight;
+        }
+
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Generate AI response
+        function generateResponse(message) {
+            const lowerMessage = message.toLowerCase().trim();
+            
+            // Check for exact matches first
+            for (const [key, response] of Object.entries(aiResponses)) {
+                if (lowerMessage.includes(key)) {
+                    return response;
+                }
+            }
+            
+            // Default responses based on keywords
+            if (lowerMessage.includes('game') || lowerMessage.includes('play')) {
+                return 'The Tic Tac Toe game is really fun! 🎮 You can play against an AI with different difficulty levels. Try clicking the "Game" button in the navigation! I love talking about games!';
+            }
+            
+            if (lowerMessage.includes('profile') || lowerMessage.includes('avatar')) {
+                return 'To customize your profile, sign in and click on your profile in the top-right corner, then select "Profile Settings". You can choose from many emoji avatars and change your display name! I think customization is so much fun!';
+            }
+            
+            if (lowerMessage.includes('settings') || lowerMessage.includes('theme')) {
+                return 'You can access settings by clicking the gear icon (⚙️) in the navigation. There you can toggle dark mode, sound effects, animations, and more! All settings save automatically!';
+            }
+            
+            if (lowerMessage.includes('sign') || lowerMessage.includes('login') || lowerMessage.includes('account')) {
+                return 'To sign in or create an account, click the "Get Started" button in the navigation. You can also click "Sign In" if you\'re not logged in! I\'d love to help you get set up!';
+            }
+            
+            // Default response
+            return 'That\'s such an interesting question! 🤔 I\'m Mccauley, your AI assistant, and I\'m here to help with MCCSITE features. Try asking me about the game, profile customization, settings, or anything else about the website! I love learning new things!';
+        }
+
+        // Send button click
+        aiSend.addEventListener('click', () => {
+            const message = aiInput.value.trim();
+            sendMessage(message);
+        });
+
+        // Enter key to send
+        aiInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const message = aiInput.value.trim();
+                sendMessage(message);
+            }
+        });
+
+        // Suggestion clicks
+        aiSuggestions.addEventListener('click', (e) => {
+            if (e.target.classList.contains('ai-suggestion')) {
+                const message = e.target.getAttribute('data-message');
+                sendMessage(message);
+            }
+        });
+
+        // Set default dark mode
+        if (!localStorage.getItem('settings')) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        
+        // Initialize settings
+        loadSettings();
+        
+        // Initialize profile on page load
+        checkAuthStatus();
+
+        // Update year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
