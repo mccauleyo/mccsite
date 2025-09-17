@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Game | MCCSITE</title>
     <meta name="description" content="Play Tic Tac Toe on MCCSITE">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=9">
     <style>
       .game-wrap { display: grid; place-items: center; padding: 32px 0 64px; position: relative; }
       .game-ui { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
@@ -31,7 +31,7 @@
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
           <a class="btn btn-small" href="get-started.html">Get Started</a>
-          <a class="btn-pixel" href="game.html">Game</a>
+          <a class="btn-pixel" href="game.html">Games</a>
           <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
           <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
           <div class="profile-container" id="profile-container" style="display: none;">
@@ -41,7 +41,7 @@
             </button>
             <div class="profile-dropdown" id="profile-dropdown">
               <a href="get-started.html" class="profile-dropdown-item">Dashboard</a>
-              <a href="game.html" class="profile-dropdown-item">Play Game</a>
+              <a href="game.html" class="profile-dropdown-item">Play Games</a>
               <button class="profile-dropdown-item" id="profile-settings-btn">Profile Settings</button>
               <div class="profile-dropdown-divider"></div>
               <button class="profile-dropdown-item" id="logout-btn">Sign Out</button>
@@ -57,11 +57,41 @@
     <main>
       <section class="hero">
         <div class="container hero-content">
-          <h1>Tic Tac Toe</h1>
-          <p>Play against an AI. You are X. First to 3 in a row wins.</p>
+          <h1>Games</h1>
+          <p>Choose your game and play against an AI opponent!</p>
         </div>
       </section>
-      <section class="game-wrap">
+      
+      <!-- Game Selector -->
+      <section class="game-selector">
+        <div class="container">
+          <div class="game-tabs">
+            <button class="game-tab active" id="tic-tac-toe-tab" data-game="tic-tac-toe">
+              <span class="game-icon">⭕❌</span>
+              <span class="game-name">Tic Tac Toe</span>
+              <span class="game-desc">3 in a row to win</span>
+            </button>
+            <button class="game-tab" id="connect4-tab" data-game="connect4">
+              <span class="game-icon">🔴🟡</span>
+              <span class="game-name">Connect 4</span>
+              <span class="game-desc">4 in a row to win</span>
+            </button>
+            <button class="game-tab" id="snake-tab" data-game="snake">
+              <span class="game-icon">🐍</span>
+              <span class="game-name">Snake</span>
+              <span class="game-desc">Eat food, grow longer</span>
+            </button>
+            <button class="game-tab" id="chess-tab" data-game="chess">
+              <span class="game-icon">♔♕</span>
+              <span class="game-name">Chess</span>
+              <span class="game-desc">Classic strategy game</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tic Tac Toe Game -->
+      <section class="game-wrap" id="tic-tac-toe-game">
         <canvas class="confetti-canvas" id="confetti"></canvas>
         <div class="game-ui">
           <span class="game-status" id="status">Your turn</span>
@@ -75,6 +105,135 @@
         </div>
         <div class="board" id="board" aria-label="Tic Tac Toe board" role="grid"></div>
         <div class="hint">Tip: Click a square to place X. The AI plays O.</div>
+      </section>
+
+      <!-- Connect 4 Game -->
+      <section class="game-wrap" id="connect4-game" style="display: none;">
+        <canvas class="confetti-canvas" id="confetti-connect4"></canvas>
+        <div class="game-ui">
+          <span class="game-status" id="status-connect4">Your turn - Drop a red piece</span>
+          <label for="difficulty-connect4" style="color: var(--muted);">Difficulty</label>
+          <select class="game-btn" id="difficulty-connect4" aria-label="Difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard" selected>Hard</option>
+          </select>
+          <button class="game-btn" id="restart-connect4">Restart</button>
+        </div>
+        <div class="connect4-board" id="connect4-board" aria-label="Connect 4 board" role="grid"></div>
+        <div class="hint">Tip: Click a column to drop your piece. Get 4 in a row to win!</div>
+      </section>
+
+      <!-- Snake Game -->
+      <section class="game-wrap" id="snake-game" style="display: none;">
+        <div class="game-ui">
+          <span class="game-status" id="status-snake">Use arrow keys to move. Eat the food!</span>
+          <div class="snake-controls">
+            <label for="snake-skin">Snake Skin:</label>
+            <select id="snake-skin" class="game-btn">
+              <option value="green">Green Snake</option>
+              <option value="brown">Brown Snake</option>
+              <option value="black">Black Snake</option>
+              <option value="coral">Coral Snake</option>
+              <option value="python">Python</option>
+            </select>
+            <label for="snake-speed">Speed:</label>
+            <select id="snake-speed" class="game-btn">
+              <option value="slow">Slow</option>
+              <option value="medium" selected>Medium</option>
+              <option value="fast">Fast</option>
+            </select>
+            <label for="board-size">Board Size:</label>
+            <select id="board-size" class="game-btn">
+              <option value="small">Small (300x300)</option>
+              <option value="medium" selected>Medium (400x400)</option>
+              <option value="large">Large (500x500)</option>
+            </select>
+            <label for="food-count">Food Count:</label>
+            <select id="food-count" class="game-btn">
+              <option value="1">1 Food</option>
+              <option value="2">2 Foods</option>
+              <option value="3">3 Foods</option>
+              <option value="5">5 Foods</option>
+            </select>
+            <label for="food-type">Food Type:</label>
+            <select id="food-type" class="game-btn">
+              <option value="apple">🍎 Apple</option>
+              <option value="cherry">🍒 Cherry</option>
+              <option value="berry">🫐 Berry</option>
+              <option value="coin">🪙 Coin</option>
+            </select>
+            <button class="game-btn" id="restart-snake">Restart</button>
+          </div>
+        </div>
+        <div class="snake-container">
+          <div class="snake-score">
+            <div class="score-display">
+              <span class="score-label">Score:</span>
+              <span class="score-value" id="snake-score">0</span>
+            </div>
+            <div class="high-score-display">
+              <span class="high-score-label">High Score:</span>
+              <span class="high-score-value" id="snake-high-score">0</span>
+            </div>
+          </div>
+          <div class="snake-canvas-wrapper">
+            <canvas id="snake-canvas" width="400" height="400"></canvas>
+          </div>
+        </div>
+        <div class="hint">Use arrow keys to control the snake. Eat food to grow and increase your score!</div>
+      </section>
+
+
+      <!-- Chess Game -->
+      <section class="game-wrap" id="chess-game" style="display: none;">
+        <div class="game-ui">
+          <span class="game-status" id="status-chess">Click a piece to select it, then click a square to move!</span>
+          <div class="chess-controls">
+            <label for="chess-difficulty">AI Difficulty:</label>
+            <select id="chess-difficulty" class="game-btn">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <label for="chess-theme">Board Theme:</label>
+            <select id="chess-theme" class="game-btn">
+              <option value="classic" selected>Classic</option>
+              <option value="modern">Modern</option>
+              <option value="wood">Wood</option>
+              <option value="marble">Marble</option>
+            </select>
+            <button class="game-btn" id="restart-chess">Restart</button>
+          </div>
+        </div>
+        <div class="chess-container">
+          <div class="chess-coordinates">
+            <div class="chess-files">
+              <div>a</div>
+              <div>b</div>
+              <div>c</div>
+              <div>d</div>
+              <div>e</div>
+              <div>f</div>
+              <div>g</div>
+              <div>h</div>
+            </div>
+            <div class="chess-board-wrapper">
+              <div class="chess-ranks">
+                <div>8</div>
+                <div>7</div>
+                <div>6</div>
+                <div>5</div>
+                <div>4</div>
+                <div>3</div>
+                <div>2</div>
+                <div>1</div>
+              </div>
+              <div class="chess-board" id="chess-board"></div>
+            </div>
+          </div>
+        </div>
+        <div class="hint">Click pieces to select them, then click a destination square to move. White moves first!</div>
       </section>
     </main>
     
@@ -502,7 +661,1066 @@
       
       // Initialize profile on page load
       checkAuthStatus();
+      
+      // Game Selector Functionality
+      const gameTabs = document.querySelectorAll('.game-tab');
+      const ticTacToeGame = document.getElementById('tic-tac-toe-game');
+      const connect4Game = document.getElementById('connect4-game');
+      const snakeGame = document.getElementById('snake-game');
+      const chessGame = document.getElementById('chess-game');
+      
+      gameTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          console.log('Game tab clicked:', tab.dataset.game); // Debug log
+          
+          // Remove active class from all tabs
+          gameTabs.forEach(t => t.classList.remove('active'));
+          // Add active class to clicked tab
+          tab.classList.add('active');
+          
+          // Hide all games
+          ticTacToeGame.style.display = 'none';
+          connect4Game.style.display = 'none';
+          snakeGame.style.display = 'none';
+          chessGame.style.display = 'none';
+          
+          const game = tab.dataset.game;
+          if (game === 'tic-tac-toe') {
+            ticTacToeGame.style.display = 'block';
+            init(); // Reinitialize Tic Tac Toe
+          } else if (game === 'connect4') {
+            connect4Game.style.display = 'block';
+            console.log('Switching to Connect 4'); // Debug log
+            initConnect4(); // Initialize Connect 4
+          } else if (game === 'snake') {
+            snakeGame.style.display = 'block';
+            initSnake(); // Initialize Snake
+          } else if (game === 'chess') {
+            chessGame.style.display = 'block';
+            initChess(); // Initialize Chess
+          }
+        });
+      });
+      
+      // Connect 4 Game Logic
+      let connect4Board = [];
+      let connect4CurrentPlayer = 'red';
+      let connect4GameOver = false;
+      const connect4Rows = 6;
+      const connect4Cols = 7;
+      
+      function initConnect4() {
+        console.log('Initializing Connect 4'); // Debug log
+        connect4Board = Array(connect4Rows).fill().map(() => Array(connect4Cols).fill(''));
+        connect4CurrentPlayer = 'red';
+        connect4GameOver = false;
+        
+        const board = document.getElementById('connect4-board');
+        if (!board) {
+          console.error('Connect 4 board element not found!'); // Debug log
+          return;
+        }
+        
+        board.innerHTML = '';
+        console.log('Creating Connect 4 cells...'); // Debug log
+        
+        for (let row = 0; row < connect4Rows; row++) {
+          for (let col = 0; col < connect4Cols; col++) {
+            const cell = document.createElement('div');
+            cell.className = 'connect4-cell';
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+            cell.title = `Row ${row}, Col ${col}`; // Debug tooltip
+            cell.addEventListener('click', () => handleConnect4Click(col));
+            board.appendChild(cell);
+          }
+        }
+        
+        console.log('Connect 4 initialized with', connect4Rows * connect4Cols, 'cells'); // Debug log
+        updateConnect4Status('Your turn - Drop a red piece');
+      }
+      
+      function handleConnect4Click(col) {
+        console.log('Connect 4 click on column:', col); // Debug log
+        if (connect4GameOver) return;
+        
+        // Find the lowest empty row in the column
+        for (let row = connect4Rows - 1; row >= 0; row--) {
+          if (connect4Board[row][col] === '') {
+            console.log('Placing piece at row:', row, 'col:', col); // Debug log
+            connect4Board[row][col] = connect4CurrentPlayer;
+            
+            // Update the visual board
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            if (cell) {
+              cell.classList.add(connect4CurrentPlayer);
+              console.log('Added class to cell:', connect4CurrentPlayer); // Debug log
+            } else {
+              console.error('Cell not found for row:', row, 'col:', col); // Debug log
+            }
+            
+            // Check for win
+            if (checkConnect4Win(row, col)) {
+              connect4GameOver = true;
+              updateConnect4Status(`${connect4CurrentPlayer === 'red' ? 'You' : 'AI'} wins!`);
+              showConnect4Confetti();
+              playSound('win');
+              return;
+            }
+            
+            // Check for draw
+            if (isConnect4BoardFull()) {
+              connect4GameOver = true;
+              updateConnect4Status("It's a draw!");
+              playSound('draw');
+              return;
+            }
+            
+            // Switch players
+            connect4CurrentPlayer = connect4CurrentPlayer === 'red' ? 'yellow' : 'red';
+            updateConnect4Status(connect4CurrentPlayer === 'red' ? 'Your turn - Drop a red piece' : 'AI is thinking...');
+            
+            // AI move
+            if (connect4CurrentPlayer === 'yellow') {
+              setTimeout(() => makeConnect4AIMove(), 1000);
+            }
+            
+            break;
+          }
+        }
+      }
+      
+      function makeConnect4AIMove() {
+        if (connect4GameOver) return;
+        
+        const difficulty = document.getElementById('difficulty-connect4').value;
+        let col;
+        
+        if (difficulty === 'easy') {
+          col = getRandomConnect4Move();
+        } else if (difficulty === 'medium') {
+          col = getConnect4AIMove(2); // Look ahead 2 moves
+        } else {
+          col = getConnect4AIMove(4); // Look ahead 4 moves
+        }
+        
+        handleConnect4Click(col);
+      }
+      
+      function getRandomConnect4Move() {
+        const availableCols = [];
+        for (let col = 0; col < connect4Cols; col++) {
+          if (connect4Board[0][col] === '') {
+            availableCols.push(col);
+          }
+        }
+        return availableCols[Math.floor(Math.random() * availableCols.length)];
+      }
+      
+      function getConnect4AIMove(depth) {
+        // Simple AI: try to win, block player, or make a good move
+        const availableCols = [];
+        for (let col = 0; col < connect4Cols; col++) {
+          if (connect4Board[0][col] === '') {
+            availableCols.push(col);
+          }
+        }
+        
+        // Check for winning move
+        for (let col of availableCols) {
+          const row = getConnect4LowestRow(col);
+          if (row !== -1) {
+            connect4Board[row][col] = 'yellow';
+            if (checkConnect4Win(row, col)) {
+              connect4Board[row][col] = '';
+              return col;
+            }
+            connect4Board[row][col] = '';
+          }
+        }
+        
+        // Check for blocking move
+        for (let col of availableCols) {
+          const row = getConnect4LowestRow(col);
+          if (row !== -1) {
+            connect4Board[row][col] = 'red';
+            if (checkConnect4Win(row, col)) {
+              connect4Board[row][col] = '';
+              return col;
+            }
+            connect4Board[row][col] = '';
+          }
+        }
+        
+        // Prefer center columns
+        const centerCols = [3, 2, 4, 1, 5, 0, 6];
+        for (let col of centerCols) {
+          if (availableCols.includes(col)) {
+            return col;
+          }
+        }
+        
+        return availableCols[Math.floor(Math.random() * availableCols.length)];
+      }
+      
+      function getConnect4LowestRow(col) {
+        for (let row = connect4Rows - 1; row >= 0; row--) {
+          if (connect4Board[row][col] === '') {
+            return row;
+          }
+        }
+        return -1;
+      }
+      
+      function checkConnect4Win(row, col) {
+        const player = connect4Board[row][col];
+        
+        // Check horizontal
+        let count = 1;
+        for (let c = col - 1; c >= 0 && connect4Board[row][c] === player; c--) count++;
+        for (let c = col + 1; c < connect4Cols && connect4Board[row][c] === player; c++) count++;
+        if (count >= 4) {
+          highlightConnect4Win(row, col, 'horizontal');
+          return true;
+        }
+        
+        // Check vertical
+        count = 1;
+        for (let r = row - 1; r >= 0 && connect4Board[r][col] === player; r--) count++;
+        for (let r = row + 1; r < connect4Rows && connect4Board[r][col] === player; r++) count++;
+        if (count >= 4) {
+          highlightConnect4Win(row, col, 'vertical');
+          return true;
+        }
+        
+        // Check diagonal (top-left to bottom-right)
+        count = 1;
+        for (let r = row - 1, c = col - 1; r >= 0 && c >= 0 && connect4Board[r][c] === player; r--, c--) count++;
+        for (let r = row + 1, c = col + 1; r < connect4Rows && c < connect4Cols && connect4Board[r][c] === player; r++, c++) count++;
+        if (count >= 4) {
+          highlightConnect4Win(row, col, 'diagonal1');
+          return true;
+        }
+        
+        // Check diagonal (top-right to bottom-left)
+        count = 1;
+        for (let r = row - 1, c = col + 1; r >= 0 && c < connect4Cols && connect4Board[r][c] === player; r--, c++) count++;
+        for (let r = row + 1, c = col - 1; r < connect4Rows && c >= 0 && connect4Board[r][c] === player; r++, c--) count++;
+        if (count >= 4) {
+          highlightConnect4Win(row, col, 'diagonal2');
+          return true;
+        }
+        
+        return false;
+      }
+      
+      function highlightConnect4Win(row, col, direction) {
+        const player = connect4Board[row][col];
+        const winningCells = [];
+        
+        if (direction === 'horizontal') {
+          for (let c = 0; c < connect4Cols; c++) {
+            if (connect4Board[row][c] === player) {
+              winningCells.push({row, col: c});
+            }
+          }
+        } else if (direction === 'vertical') {
+          for (let r = 0; r < connect4Rows; r++) {
+            if (connect4Board[r][col] === player) {
+              winningCells.push({row: r, col});
+            }
+          }
+        } else if (direction === 'diagonal1') {
+          for (let r = 0; r < connect4Rows; r++) {
+            for (let c = 0; c < connect4Cols; c++) {
+              if (connect4Board[r][c] === player && Math.abs(r - row) === Math.abs(c - col) && (r - row) * (c - col) >= 0) {
+                winningCells.push({row: r, col: c});
+              }
+            }
+          }
+        } else if (direction === 'diagonal2') {
+          for (let r = 0; r < connect4Rows; r++) {
+            for (let c = 0; c < connect4Cols; c++) {
+              if (connect4Board[r][c] === player && Math.abs(r - row) === Math.abs(c - col) && (r - row) * (c - col) <= 0) {
+                winningCells.push({row: r, col: c});
+              }
+            }
+          }
+        }
+        
+        // Highlight winning cells
+        winningCells.forEach(({row, col}) => {
+          const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+          if (cell) {
+            cell.classList.add('winning');
+          }
+        });
+      }
+      
+      function isConnect4BoardFull() {
+        return connect4Board[0].every(cell => cell !== '');
+      }
+      
+      function updateConnect4Status(message) {
+        document.getElementById('status-connect4').textContent = message;
+      }
+      
+      function showConnect4Confetti() {
+        const canvas = document.getElementById('confetti-connect4');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const confetti = [];
+        for (let i = 0; i < 150; i++) {
+          confetti.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            vx: (Math.random() - 0.5) * 2,
+            vy: Math.random() * 3 + 2,
+            color: ['#ef4444', '#eab308', '#22c55e', '#3b82f6', '#a855f7'][Math.floor(Math.random() * 5)],
+            size: Math.random() * 3 + 2
+          });
+        }
+        
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          confetti.forEach(particle => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.vy += 0.1;
+            
+            ctx.fillStyle = particle.color;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          
+          if (confetti.some(p => p.y < canvas.height)) {
+            requestAnimationFrame(animate);
+          }
+        }
+        
+        animate();
+      }
+      
+      // Connect 4 restart button
+      document.getElementById('restart-connect4').addEventListener('click', initConnect4);
+      
+      // Snake Game Variables
+      let snakeCanvas, snakeCtx, snake, foods, direction, gameRunning, score, highScore;
+      let snakeSkin = 'green';
+      let gameSpeed = 150; // milliseconds between moves
+      let lastMoveTime = 0;
+      let animationId = null;
+      let gridSize = 20;
+      let boardSize = 'medium'; // small, medium, large
+      let foodCount = 1; // Number of food items
+      let foodType = 'apple'; // apple, cherry, berry, coin
+      let snakePositions = []; // For smooth interpolation
+      let zoomLevel = 1; // For smaller boards
+      let snakeColors = {
+        green: { head: '#22c55e', body: '#16a34a', pattern: '#15803d' },
+        brown: { head: '#a3a3a3', body: '#737373', pattern: '#525252' },
+        black: { head: '#1f2937', body: '#111827', pattern: '#000000' },
+        coral: { head: '#f87171', body: '#ef4444', pattern: '#dc2626' },
+        python: { head: '#fbbf24', body: '#f59e0b', pattern: '#d97706' }
+      };
+      let foodTypes = {
+        apple: { color: '#ef4444', symbol: '🍎', size: 0.8 },
+        cherry: { color: '#dc2626', symbol: '🍒', size: 0.6 },
+        berry: { color: '#7c3aed', symbol: '🫐', size: 0.5 },
+        coin: { color: '#fbbf24', symbol: '🪙', size: 0.7 }
+      };
+      
+      function initSnake() {
+        // Cancel any existing animation
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+        
+        snakeCanvas = document.getElementById('snake-canvas');
+        snakeCtx = snakeCanvas.getContext('2d');
+        
+        // Set canvas size based on board size
+        const boardSizes = { small: 300, medium: 400, large: 500 };
+        snakeCanvas.width = boardSizes[boardSize];
+        snakeCanvas.height = boardSizes[boardSize];
+        
+        // Adjust grid size based on board size
+        gridSize = boardSizes[boardSize] / 20;
+        
+        // Set zoom level for smaller boards
+        zoomLevel = boardSize === 'small' ? 1.5 : boardSize === 'medium' ? 1.2 : 1;
+        snakeCanvas.style.transform = `scale(${zoomLevel})`;
+        snakeCanvas.style.transformOrigin = 'center';
+        
+        snake = [{x: 10, y: 10}]; // Start in grid position
+        snakePositions = [{x: 10, y: 10}]; // For smooth interpolation
+        foods = []; // Array of food items
+        direction = {x: 0, y: 0};
+        gameRunning = false;
+        score = 0;
+        lastMoveTime = 0;
+        
+        // Load high score from localStorage
+        highScore = parseInt(localStorage.getItem('snakeHighScore')) || 0;
+        updateScoreDisplay();
+        
+        generateFoods();
+        drawSnake();
+        updateSnakeStatus('Press any arrow key to start!');
+      }
+      
+      function generateFoods() {
+        const maxX = Math.floor(snakeCanvas.width / gridSize) - 2;
+        const maxY = Math.floor(snakeCanvas.height / gridSize) - 2;
+        
+        foods = [];
+        
+        for (let i = 0; i < foodCount; i++) {
+          let newFood;
+          do {
+            newFood = {
+              x: Math.floor(Math.random() * maxX) + 1,
+              y: Math.floor(Math.random() * maxY) + 1,
+              type: foodType
+            };
+          } while (
+            snake.some(segment => segment.x === newFood.x && segment.y === newFood.y) ||
+            foods.some(food => food.x === newFood.x && food.y === newFood.y)
+          );
+          
+          foods.push(newFood);
+        }
+      }
+      
+      function generateSingleFood() {
+        const maxX = Math.floor(snakeCanvas.width / gridSize) - 2;
+        const maxY = Math.floor(snakeCanvas.height / gridSize) - 2;
+        
+        let newFood;
+        do {
+          newFood = {
+            x: Math.floor(Math.random() * maxX) + 1,
+            y: Math.floor(Math.random() * maxY) + 1,
+            type: foodType
+          };
+        } while (
+          snake.some(segment => segment.x === newFood.x && segment.y === newFood.y) ||
+          foods.some(food => food.x === newFood.x && food.y === newFood.y)
+        );
+        
+        foods.push(newFood);
+      }
+      
+      function updateScoreDisplay() {
+        document.getElementById('snake-score').textContent = score;
+        document.getElementById('snake-high-score').textContent = highScore;
+      }
+      
+      function updateScore() {
+        score++;
+        if (score > highScore) {
+          highScore = score;
+          localStorage.setItem('snakeHighScore', highScore.toString());
+        }
+        updateScoreDisplay();
+      }
+      
+      function drawSnake() {
+        // Clear canvas with animated gradient background
+        const time = Date.now() * 0.001;
+        const gradient = snakeCtx.createLinearGradient(0, 0, snakeCanvas.width, snakeCanvas.height);
+        gradient.addColorStop(0, `hsl(${220 + Math.sin(time) * 10}, 70%, 15%)`);
+        gradient.addColorStop(0.5, `hsl(${230 + Math.sin(time * 0.8) * 10}, 60%, 20%)`);
+        gradient.addColorStop(1, `hsl(${240 + Math.sin(time * 1.2) * 10}, 50%, 25%)`);
+        snakeCtx.fillStyle = gradient;
+        snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+        
+        // Draw grid lines (Google Snake style)
+        snakeCtx.strokeStyle = `rgba(59, 130, 246, 0.2)`;
+        snakeCtx.lineWidth = 1;
+        for (let i = 0; i <= snakeCanvas.width; i += gridSize) {
+          snakeCtx.beginPath();
+          snakeCtx.moveTo(i, 0);
+          snakeCtx.lineTo(i, snakeCanvas.height);
+          snakeCtx.stroke();
+        }
+        for (let i = 0; i <= snakeCanvas.height; i += gridSize) {
+          snakeCtx.beginPath();
+          snakeCtx.moveTo(0, i);
+          snakeCtx.lineTo(snakeCanvas.width, i);
+          snakeCtx.stroke();
+        }
+        
+        // Draw smooth snake with realistic appearance
+        snake.forEach((segment, index) => {
+          const isHead = index === 0;
+          const nextSegment = snake[index + 1];
+          const prevSegment = snake[index - 1];
+          
+          // Calculate smooth position with interpolation
+          let x = segment.x * gridSize;
+          let y = segment.y * gridSize;
+          
+          // Add smooth interpolation for body segments
+          if (!isHead && prevSegment) {
+            const progress = (Date.now() - lastMoveTime) / gameSpeed;
+            if (progress < 1) {
+              x = prevSegment.x * gridSize + (segment.x - prevSegment.x) * gridSize * progress;
+              y = prevSegment.y * gridSize + (segment.y - prevSegment.y) * gridSize * progress;
+            }
+          }
+          
+          const size = gridSize - 2;
+          const centerX = x + gridSize/2;
+          const centerY = y + gridSize/2;
+          const colors = snakeColors[snakeSkin];
+          
+          // Draw snake segment with rounded corners
+          snakeCtx.fillStyle = isHead ? colors.head : colors.body;
+          snakeCtx.beginPath();
+          snakeCtx.roundRect(x + 1, y + 1, size, size, 6);
+          snakeCtx.fill();
+          
+          // Add border
+          snakeCtx.strokeStyle = colors.pattern;
+          snakeCtx.lineWidth = 2;
+          snakeCtx.stroke();
+          
+          if (isHead) {
+            // Draw eyes that look in movement direction
+            const eyeOffset = direction.x * 3;
+            snakeCtx.fillStyle = 'white';
+            snakeCtx.beginPath();
+            snakeCtx.arc(centerX - 4 + eyeOffset, centerY - 3, 3, 0, 2 * Math.PI);
+            snakeCtx.fill();
+            snakeCtx.beginPath();
+            snakeCtx.arc(centerX + 4 + eyeOffset, centerY - 3, 3, 0, 2 * Math.PI);
+            snakeCtx.fill();
+            
+            snakeCtx.fillStyle = 'black';
+            snakeCtx.beginPath();
+            snakeCtx.arc(centerX - 4 + eyeOffset, centerY - 3, 1.5, 0, 2 * Math.PI);
+            snakeCtx.fill();
+            snakeCtx.beginPath();
+            snakeCtx.arc(centerX + 4 + eyeOffset, centerY - 3, 1.5, 0, 2 * Math.PI);
+            snakeCtx.fill();
+          } else {
+            // Add scale pattern for body segments
+            snakeCtx.fillStyle = colors.pattern;
+            for (let i = 0; i < 3; i++) {
+              const scaleX = centerX + (i - 1) * 4;
+              snakeCtx.beginPath();
+              snakeCtx.arc(scaleX, centerY, 2, 0, 2 * Math.PI);
+              snakeCtx.fill();
+            }
+          }
+          
+        });
+        
+        // Draw all foods
+        foods.forEach(food => {
+          const foodX = food.x * gridSize + 1;
+          const foodY = food.y * gridSize + 1;
+          const foodSize = (gridSize - 2) * foodTypes[food.type].size;
+          const foodCenterX = foodX + (gridSize - 2) / 2;
+          const foodCenterY = foodY + (gridSize - 2) / 2;
+          
+          // Draw food with type-specific appearance
+          const foodData = foodTypes[food.type];
+          
+          // Food background circle
+          snakeCtx.fillStyle = foodData.color;
+          snakeCtx.beginPath();
+          snakeCtx.arc(foodCenterX, foodCenterY, foodSize / 2, 0, 2 * Math.PI);
+          snakeCtx.fill();
+          
+          // Food border
+          snakeCtx.strokeStyle = foodData.color;
+          snakeCtx.lineWidth = 2;
+          snakeCtx.stroke();
+          
+          // Draw food symbol/emoji
+          snakeCtx.font = `${foodSize}px Arial`;
+          snakeCtx.textAlign = 'center';
+          snakeCtx.textBaseline = 'middle';
+          snakeCtx.fillStyle = 'white';
+          snakeCtx.fillText(foodData.symbol, foodCenterX, foodCenterY);
+        });
+      }
+      
+      function gameLoop(currentTime) {
+        if (!gameRunning) return;
+        
+        // Always draw at 60fps for smooth visuals
+        drawSnake();
+        
+        // Only move snake at the specified speed
+        if (currentTime - lastMoveTime >= gameSpeed) {
+          if (direction.x !== 0 || direction.y !== 0) {
+            const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+            
+            // Check wall collision
+            if (head.x < 0 || head.x >= snakeCanvas.width / gridSize || 
+                head.y < 0 || head.y >= snakeCanvas.height / gridSize) {
+              gameOver();
+              return;
+            }
+            
+            // Check self collision
+            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+              gameOver();
+              return;
+            }
+            
+            snake.unshift(head);
+            
+            // Check food collision
+            const eatenFoodIndex = foods.findIndex(food => head.x === food.x && head.y === food.y);
+            if (eatenFoodIndex !== -1) {
+              updateScore();
+              updateSnakeStatus(`Score: ${score} - Eat the food!`);
+              foods.splice(eatenFoodIndex, 1);
+              
+              // Generate only one new food to replace the eaten one
+              generateSingleFood();
+            } else {
+              snake.pop();
+            }
+          }
+          
+          lastMoveTime = currentTime;
+        }
+        
+        animationId = requestAnimationFrame(gameLoop);
+      }
+      
+      function gameOver() {
+        gameRunning = false;
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+        const isNewHighScore = score === highScore && score > 0;
+        updateSnakeStatus(`Game Over! Final Score: ${score}${isNewHighScore ? ' - NEW HIGH SCORE!' : ''} - Press restart to play again`);
+      }
+      
+      function updateSnakeStatus(message) {
+        document.getElementById('status-snake').textContent = message;
+      }
+      
+      // Snake controls
+      document.addEventListener('keydown', (e) => {
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+          e.preventDefault(); // Prevent page scrolling
+          
+        if (!gameRunning) {
+          gameRunning = true;
+          animationId = requestAnimationFrame(gameLoop);
+        }
+          
+          switch(e.key) {
+            case 'ArrowUp':
+              if (direction.y === 0) direction = {x: 0, y: -1};
+              break;
+            case 'ArrowDown':
+              if (direction.y === 0) direction = {x: 0, y: 1};
+              break;
+            case 'ArrowLeft':
+              if (direction.x === 0) direction = {x: -1, y: 0};
+              break;
+            case 'ArrowRight':
+              if (direction.x === 0) direction = {x: 1, y: 0};
+              break;
+          }
+        }
+      });
+      
+      // Snake restart button
+      document.getElementById('restart-snake').addEventListener('click', initSnake);
+      
+      // Snake customization controls
+      document.getElementById('snake-skin').addEventListener('change', (e) => {
+        snakeSkin = e.target.value;
+        drawSnake();
+      });
+      
+      document.getElementById('snake-speed').addEventListener('change', (e) => {
+        const speeds = { slow: 200, medium: 150, fast: 100 };
+        gameSpeed = speeds[e.target.value];
+      });
+      
+      document.getElementById('board-size').addEventListener('change', (e) => {
+        boardSize = e.target.value;
+        initSnake();
+      });
+      
+      document.getElementById('food-count').addEventListener('change', (e) => {
+        foodCount = parseInt(e.target.value);
+        generateFoods();
+        drawSnake();
+      });
+      
+      document.getElementById('food-type').addEventListener('change', (e) => {
+        foodType = e.target.value;
+        generateFoods();
+        drawSnake();
+      });
+      
+      
+      // Chess Game Variables
+      let chessBoard = [];
+      let chessCurrentPlayer = 'white';
+      let selectedPiece = null;
+      let selectedSquare = null;
+      let chessGameActive = true;
+      let suggestedMoves = [];
+      let aiThinking = false;
+      let aiDifficulty = 'medium';
+      let chessTheme = 'classic';
+      
+      const chessPieces = {
+        'white': {
+          'king': '♔', 'queen': '♕', 'rook': '♖', 'bishop': '♗', 'knight': '♘', 'pawn': '♙'
+        },
+        'black': {
+          'king': '♚', 'queen': '♛', 'rook': '♜', 'bishop': '♝', 'knight': '♞', 'pawn': '♟'
+        }
+      };
+      
+      function initChess() {
+        chessBoard = [
+          ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
+          ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['', '', '', '', '', '', '', ''],
+          ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+          ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
+        ];
+        
+        chessCurrentPlayer = 'white';
+        selectedPiece = null;
+        selectedSquare = null;
+        chessGameActive = true;
+        
+        updateChessDisplay();
+        updateChessStatus('White to move. Click a piece to select it!');
+        generateSuggestedMoves();
+      }
+      
+      function updateChessDisplay() {
+        const board = document.getElementById('chess-board');
+        board.className = `chess-board theme-${chessTheme}`;
+        board.innerHTML = '';
+        
+        for (let row = 0; row < 8; row++) {
+          for (let col = 0; col < 8; col++) {
+            const square = document.createElement('div');
+            square.className = 'chess-square';
+            square.dataset.row = row;
+            square.dataset.col = col;
+            
+            // Alternate square colors based on theme
+            if ((row + col) % 2 === 0) {
+              square.classList.add('light-square');
+            } else {
+              square.classList.add('dark-square');
+            }
+            
+            // Highlight selected square
+            if (selectedSquare && selectedSquare.row === row && selectedSquare.col === col) {
+              square.classList.add('selected');
+            }
+            
+            // Add piece
+            const piece = chessBoard[row][col];
+            if (piece) {
+              const pieceElement = document.createElement('div');
+              pieceElement.className = 'chess-piece';
+              pieceElement.textContent = getPieceSymbol(piece);
+              square.appendChild(pieceElement);
+            }
+            
+            square.addEventListener('click', () => handleChessClick(row, col));
+            board.appendChild(square);
+          }
+        }
+      }
+      
+      function getPieceSymbol(piece) {
+        const isWhite = piece === piece.toUpperCase();
+        const pieceType = piece.toLowerCase();
+        const color = isWhite ? 'white' : 'black';
+        
+        switch(pieceType) {
+          case 'k': return chessPieces[color].king;
+          case 'q': return chessPieces[color].queen;
+          case 'r': return chessPieces[color].rook;
+          case 'b': return chessPieces[color].bishop;
+          case 'n': return chessPieces[color].knight;
+          case 'p': return chessPieces[color].pawn;
+          default: return '';
+        }
+      }
+      
+      function handleChessClick(row, col) {
+        if (!chessGameActive) return;
+        
+        const piece = chessBoard[row][col];
+        const isWhitePiece = piece && piece === piece.toUpperCase();
+        const isBlackPiece = piece && piece === piece.toLowerCase();
+        
+        // If no piece is selected
+        if (!selectedPiece) {
+          // Select a piece of the current player's color
+          if ((chessCurrentPlayer === 'white' && isWhitePiece) || 
+              (chessCurrentPlayer === 'black' && isBlackPiece)) {
+            selectedPiece = piece;
+            selectedSquare = { row, col };
+            updateChessDisplay();
+            updateChessStatus(`Selected ${piece}. Click a destination square!`);
+          }
+        } else {
+          // Try to move the selected piece
+          if (isValidMove(selectedSquare.row, selectedSquare.col, row, col)) {
+            // Make the move
+            chessBoard[row][col] = selectedPiece;
+            chessBoard[selectedSquare.row][selectedSquare.col] = '';
+            
+            // Switch players
+            chessCurrentPlayer = chessCurrentPlayer === 'white' ? 'black' : 'white';
+            selectedPiece = null;
+            selectedSquare = null;
+            suggestedMoves = [];
+            updateChessDisplay();
+            
+            if (chessCurrentPlayer === 'black') {
+              updateChessStatus('AI is thinking...');
+              setTimeout(makeAIMove, 1000);
+            } else {
+              updateChessStatus('White to move! Click a piece to select it!');
+              generateSuggestedMoves();
+            }
+          } else {
+            // Invalid move, deselect
+            selectedPiece = null;
+            selectedSquare = null;
+            updateChessDisplay();
+            updateChessStatus('Invalid move! Try again.');
+          }
+        }
+      }
+      
+      function isValidMove(fromRow, fromCol, toRow, toCol) {
+        // Basic validation - can't move to same square
+        if (fromRow === toRow && fromCol === toCol) return false;
+        
+        // Can't capture own piece
+        const targetPiece = chessBoard[toRow][toCol];
+        const movingPiece = chessBoard[fromRow][fromCol];
+        const isMovingWhite = movingPiece === movingPiece.toUpperCase();
+        const isTargetWhite = targetPiece && targetPiece === targetPiece.toUpperCase();
+        
+        if (targetPiece && isMovingWhite === isTargetWhite) return false;
+        
+        // Basic piece movement rules (simplified)
+        const piece = movingPiece.toLowerCase();
+        const rowDiff = Math.abs(toRow - fromRow);
+        const colDiff = Math.abs(toCol - fromCol);
+        
+        switch(piece) {
+          case 'p': // Pawn
+            if (isMovingWhite) {
+              return (fromRow - toRow === 1 && colDiff === 0 && !targetPiece) ||
+                     (fromRow - toRow === 1 && colDiff === 1 && targetPiece);
+            } else {
+              return (toRow - fromRow === 1 && colDiff === 0 && !targetPiece) ||
+                     (toRow - fromRow === 1 && colDiff === 1 && targetPiece);
+            }
+          case 'r': // Rook
+            return (rowDiff === 0 || colDiff === 0) && isPathClear(fromRow, fromCol, toRow, toCol);
+          case 'b': // Bishop
+            return rowDiff === colDiff && isPathClear(fromRow, fromCol, toRow, toCol);
+          case 'q': // Queen
+            return (rowDiff === colDiff || rowDiff === 0 || colDiff === 0) && isPathClear(fromRow, fromCol, toRow, toCol);
+          case 'k': // King
+            return rowDiff <= 1 && colDiff <= 1;
+          case 'n': // Knight
+            return (rowDiff === 2 && colDiff === 1) || (rowDiff === 1 && colDiff === 2);
+          default:
+            return false;
+        }
+      }
+      
+      function isPathClear(fromRow, fromCol, toRow, toCol) {
+        const rowStep = toRow > fromRow ? 1 : toRow < fromRow ? -1 : 0;
+        const colStep = toCol > fromCol ? 1 : toCol < fromCol ? -1 : 0;
+        
+        let currentRow = fromRow + rowStep;
+        let currentCol = fromCol + colStep;
+        
+        while (currentRow !== toRow || currentCol !== toCol) {
+          if (chessBoard[currentRow][currentCol] !== '') return false;
+          currentRow += rowStep;
+          currentCol += colStep;
+        }
+        
+        return true;
+      }
+      
+      function makeAIMove() {
+        if (chessCurrentPlayer !== 'black' || aiThinking) return;
+        
+        aiThinking = true;
+        const possibleMoves = getAllPossibleMoves('black');
+        
+        if (possibleMoves.length === 0) {
+          updateChessStatus('Checkmate! White wins!');
+          chessGameActive = false;
+          aiThinking = false;
+          return;
+        }
+        
+        // Simple AI: prioritize captures and center control
+        const bestMove = getBestMove(possibleMoves);
+        
+        // Make the AI move
+        chessBoard[bestMove.toRow][bestMove.toCol] = chessBoard[bestMove.fromRow][bestMove.fromCol];
+        chessBoard[bestMove.fromRow][bestMove.fromCol] = '';
+        
+        chessCurrentPlayer = 'white';
+        aiThinking = false;
+        suggestedMoves = [];
+        updateChessDisplay();
+        updateChessStatus('White to move! Click a piece to select it!');
+        generateSuggestedMoves();
+      }
+      
+      function getAllPossibleMoves(color) {
+        const moves = [];
+        const isWhite = color === 'white';
+        
+        for (let row = 0; row < 8; row++) {
+          for (let col = 0; col < 8; col++) {
+            const piece = chessBoard[row][col];
+            if (piece && (isWhite ? piece === piece.toUpperCase() : piece === piece.toLowerCase())) {
+              for (let toRow = 0; toRow < 8; toRow++) {
+                for (let toCol = 0; toCol < 8; toCol++) {
+                  if (isValidMove(row, col, toRow, toCol)) {
+                    moves.push({
+                      fromRow: row,
+                      fromCol: col,
+                      toRow: toRow,
+                      toCol: toCol,
+                      piece: piece,
+                      captured: chessBoard[toRow][toCol]
+                    });
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        return moves;
+      }
+      
+      function getBestMove(moves) {
+        if (aiDifficulty === 'easy') {
+          // Easy: mostly random moves with occasional captures
+          const captures = moves.filter(move => move.captured);
+          if (captures.length > 0 && Math.random() < 0.3) {
+            return captures[Math.floor(Math.random() * captures.length)];
+          }
+          return moves[Math.floor(Math.random() * moves.length)];
+        } else if (aiDifficulty === 'medium') {
+          // Medium: prioritize captures and center control
+          const captures = moves.filter(move => move.captured);
+          if (captures.length > 0) {
+            return captures[Math.floor(Math.random() * captures.length)];
+          }
+          
+          const centerMoves = moves.filter(move => 
+            (move.toRow >= 2 && move.toRow <= 5) && (move.toCol >= 2 && move.toCol <= 5)
+          );
+          if (centerMoves.length > 0) {
+            return centerMoves[Math.floor(Math.random() * centerMoves.length)];
+          }
+          
+          return moves[Math.floor(Math.random() * moves.length)];
+        } else {
+          // Hard: advanced strategy with piece values
+          const pieceValues = { 'p': 1, 'n': 3, 'b': 3, 'r': 5, 'q': 9, 'k': 0 };
+          
+          // Prioritize high-value captures
+          const captures = moves.filter(move => move.captured);
+          if (captures.length > 0) {
+            captures.sort((a, b) => {
+              const aValue = pieceValues[a.captured.toLowerCase()] || 0;
+              const bValue = pieceValues[b.captured.toLowerCase()] || 0;
+              return bValue - aValue;
+            });
+            return captures[0];
+          }
+          
+          // Prioritize center control and development
+          const centerMoves = moves.filter(move => 
+            (move.toRow >= 2 && move.toRow <= 5) && (move.toCol >= 2 && move.toCol <= 5)
+          );
+          if (centerMoves.length > 0) {
+            return centerMoves[Math.floor(Math.random() * centerMoves.length)];
+          }
+          
+          return moves[Math.floor(Math.random() * moves.length)];
+        }
+      }
+      
+      function generateSuggestedMoves() {
+        if (chessCurrentPlayer !== 'white') return;
+        
+        suggestedMoves = [];
+        const possibleMoves = getAllPossibleMoves('white');
+        
+        // Get up to 3 suggested moves
+        const suggested = possibleMoves.slice(0, 3);
+        suggestedMoves = suggested.map(move => ({
+          from: `${String.fromCharCode(97 + move.fromCol)}${8 - move.fromRow}`,
+          to: `${String.fromCharCode(97 + move.toCol)}${8 - move.toRow}`,
+          piece: move.piece,
+          captured: move.captured
+        }));
+        
+        updateChessStatus(`White to move! Suggested: ${suggestedMoves.map(m => `${m.from}-${m.to}`).join(', ')}`);
+      }
+      
+      function updateChessStatus(message) {
+        document.getElementById('status-chess').textContent = message;
+      }
+      
+      // Chess restart button
+      document.getElementById('restart-chess').addEventListener('click', initChess);
+      
+      // Chess controls
+      document.getElementById('chess-difficulty').addEventListener('change', (e) => {
+        aiDifficulty = e.target.value;
+      });
+      
+      document.getElementById('chess-theme').addEventListener('change', (e) => {
+        chessTheme = e.target.value;
+        updateChessDisplay();
+      });
+      
+      
+      // Initialize the default game (Tic Tac Toe)
       init();
+      
+      // Initialize Connect 4 on page load (hidden)
+      initConnect4();
     </script>
   </body>
   </html>
