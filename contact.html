@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MCCSITE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body class="contact-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">M</div>
+                    <span class="brand-name">MCCSITE</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a class="btn-pixel" href="game.html">Games</a>
+                    <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+                    <a href="contact.html">Contact</a>
+                    <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
+                    <div class="profile-container" id="profile-container" style="display: none;">
+                        <button class="profile-btn" id="profile-btn">
+                            <div class="profile-avatar" id="profile-avatar"></div>
+                            <span class="profile-name" id="profile-name">User</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="dashboard.html" id="stats-link">Stats</a>
+                            <a href="#" id="profile-settings">Profile Settings</a>
+                            <a href="#" id="logout-btn">Logout</a>
+                        </div>
+                    </div>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Contact Us</h1>
+                <p>We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h2>Get in Touch</h2>
+                        <p>Have a question, suggestion, or just want to say hi? We're here to help!</p>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <div class="contact-icon">📧</div>
+                                <div>
+                                    <h3>Email</h3>
+                                    <p>mccodonn@gmail.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="contact-icon">💬</div>
+                                <div>
+                                    <h3>AI Assistant</h3>
+                                    <p>Chat with Mccauley for instant help</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-method">
+                                <div class="contact-icon">⚡</div>
+                                <div>
+                                    <h3>Response Time</h3>
+                                    <p>Usually within 24 hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-container">
+                        <form class="contact-form" id="contact-form">
+                            <h2>Send Feedback</h2>
+                            
+                            <div class="form-group">
+                                <label for="name">Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="bug-report">Bug Report</option>
+                                    <option value="feature-request">Feature Request</option>
+                                    <option value="general-feedback">General Feedback</option>
+                                    <option value="account-issue">Account Issue</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="6" required placeholder="Tell us what's on your mind..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter">
+                                    <span class="checkmark"></span>
+                                    Subscribe to our newsletter for updates
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                        
+                        <div class="form-success" id="form-success" style="display: none;">
+                            <div class="success-icon">✅</div>
+                            <h3>Message Sent!</h3>
+                            <p>Thank you for your feedback. We'll get back to you soon!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>How do I report a bug?</h3>
+                        <p>Use the contact form above and select "Bug Report" as the subject. Include steps to reproduce the issue.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Can I request a new feature?</h3>
+                        <p>Absolutely! Select "Feature Request" and describe what you'd like to see added to the site.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>How long does it take to get a response?</h3>
+                        <p>We typically respond within 24 hours, but complex issues may take a bit longer.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3>Is there a faster way to get help?</h3>
+                        <p>Yes! Try our AI Assistant (Mccauley) for instant help with common questions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">M</div>
+                    <span class="brand-name">MCCSITE</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="game.html">Games</a>
+                    <a href="ai-chat.html">AI Assistant</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MCCSITE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Panel Button (Hidden by default) -->
+    <button class="admin-toggle" id="admin-toggle" style="display: none;">🔧 Admin</button>
+
+    <!-- Admin Panel Modal -->
+    <div class="admin-modal" id="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-header">
+                <h2>Admin Panel</h2>
+                <button class="admin-close" id="admin-close">&times;</button>
+            </div>
+            
+            <div class="admin-login" id="admin-login">
+                <h3>Enter Admin PIN</h3>
+                <input type="password" id="admin-pin" placeholder="Enter PIN" maxlength="6">
+                <button id="admin-login-btn">Login</button>
+                <div class="admin-error" id="admin-error"></div>
+            </div>
+            
+            <div class="admin-content" id="admin-content" style="display: none;">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" data-tab="users">Users</button>
+                    <button class="admin-tab" data-tab="feedback">Feedback</button>
+                </div>
+                
+                <div class="admin-tab-content" id="users-tab">
+                    <h3>Registered Users</h3>
+                    <div class="admin-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-users">0</span>
+                            <span class="stat-label">Total Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="active-users">0</span>
+                            <span class="stat-label">Active Today</span>
+                        </div>
+                    </div>
+                    <div class="users-table-container">
+                        <table class="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Join Date</th>
+                                    <th>Last Active</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="admin-tab-content" id="feedback-tab" style="display: none;">
+                    <h3>Feedback Messages</h3>
+                    <div class="feedback-list" id="feedback-list">
+                        <p>No feedback messages yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        })();
+
+        // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const feedback = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                subject: formData.get('subject'),
+                message: formData.get('message'),
+                newsletter: formData.get('newsletter') === 'on',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store feedback in localStorage
+            let feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            feedbacks.push(feedback);
+            localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+            
+            // Track activity if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                trackUserActivity('sent_feedback');
+            }
+            
+            // Send email to your address
+            sendContactEmail(feedback);
+            
+            // Show success message
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('form-success').style.display = 'block';
+            
+            // Update success message
+            const successMessage = document.querySelector('#form-success p');
+            if (successMessage) {
+                successMessage.textContent = `Thank you for your feedback! We've received your message and will get back to you soon!`;
+            }
+            
+            // Reset form after 5 seconds
+            setTimeout(() => {
+                document.getElementById('contact-form').style.display = 'block';
+                document.getElementById('form-success').style.display = 'none';
+                this.reset();
+            }, 5000);
+        });
+
+        // Send contact email function
+        function sendContactEmail(feedback) {
+            const templateParams = {
+                to_email: 'mccodonn@gmail.com', // Your email address
+                from_name: feedback.name,
+                from_email: feedback.email,
+                subject: feedback.subject,
+                message: feedback.message,
+                newsletter: feedback.newsletter ? 'Yes' : 'No',
+                timestamp: new Date().toLocaleString(),
+                reply_to: feedback.email
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_CONTACT_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('Contact email sent successfully!', response.status, response.text);
+                }, function(error) {
+                    console.log('Failed to send contact email:', error);
+                    // Still show success message even if email fails
+                });
+        }
+
+        // Track user activity function
+        function trackUserActivity(activity) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+            const activityData = {
+                icon: getActivityIcon(activity),
+                text: getActivityText(activity),
+                time: new Date().toLocaleTimeString(),
+                timestamp: new Date().toISOString()
+            };
+            
+            activities.unshift(activityData);
+            if (activities.length > 20) activities.pop();
+            
+            localStorage.setItem('userActivities', JSON.stringify(activities));
+        }
+        
+        function getActivityIcon(activity) {
+            const icons = {
+                'visited_home': '🏠',
+                'played_game': '🎮',
+                'ai_chat': '🤖',
+                'sent_feedback': '📧',
+                'visited_dashboard': '📊',
+                'changed_settings': '⚙️',
+                'visited_contact': '📞'
+            };
+            return icons[activity] || '📝';
+        }
+        
+        function getActivityText(activity) {
+            const texts = {
+                'visited_home': 'Visited home page',
+                'played_game': 'Played Tic Tac Toe',
+                'ai_chat': 'Chatted with AI assistant',
+                'sent_feedback': 'Sent feedback message',
+                'visited_dashboard': 'Visited dashboard',
+                'changed_settings': 'Updated settings',
+                'visited_contact': 'Visited contact page'
+            };
+            return texts[activity] || 'Performed an action';
+        }
+
+        // Track contact page visit
+        if (JSON.parse(localStorage.getItem('currentUser'))) {
+            trackUserActivity('visited_contact');
+        }
+
+        // Admin panel functionality
+        const adminToggle = document.getElementById('admin-toggle');
+        const adminModal = document.getElementById('admin-modal');
+        const adminClose = document.getElementById('admin-close');
+        const adminLogin = document.getElementById('admin-login');
+        const adminContent = document.getElementById('admin-content');
+        const adminPin = document.getElementById('admin-pin');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminError = document.getElementById('admin-error');
+
+        // Show admin button (you can hide this in production)
+        adminToggle.style.display = 'block';
+
+        // Admin panel toggle
+        adminToggle.addEventListener('click', () => {
+            adminModal.style.display = 'block';
+        });
+
+        adminClose.addEventListener('click', () => {
+            adminModal.style.display = 'none';
+            adminLogin.style.display = 'block';
+            adminContent.style.display = 'none';
+            adminPin.value = '';
+            adminError.textContent = '';
+        });
+
+        // Admin login
+        adminLoginBtn.addEventListener('click', () => {
+            const pin = adminPin.value;
+            if (pin === '123890') { // Change this to your desired PIN
+                adminLogin.style.display = 'none';
+                adminContent.style.display = 'block';
+                loadUsers();
+                loadFeedback();
+            } else {
+                adminError.textContent = 'Invalid PIN';
+            }
+        });
+
+        // Admin tabs
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
+                
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId).style.display = 'block';
+            });
+        });
+
+        // Load users
+        function loadUsers() {
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const usersTableBody = document.getElementById('users-table-body');
+            const totalUsers = document.getElementById('total-users');
+            const activeUsers = document.getElementById('active-users');
+            
+            totalUsers.textContent = users.length;
+            activeUsers.textContent = users.filter(user => {
+                const lastActive = new Date(user.lastActive || user.joinDate);
+                const today = new Date();
+                return lastActive.toDateString() === today.toDateString();
+            }).length;
+            
+            usersTableBody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>${user.email}</td>
+                    <td class="password-cell">${user.password}</td>
+                    <td>${new Date(user.joinDate).toLocaleDateString()}</td>
+                    <td>${new Date(user.lastActive || user.joinDate).toLocaleDateString()}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Load feedback
+        function loadFeedback() {
+            const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+            const feedbackList = document.getElementById('feedback-list');
+            
+            if (feedbacks.length === 0) {
+                feedbackList.innerHTML = '<p>No feedback messages yet.</p>';
+                return;
+            }
+            
+            feedbackList.innerHTML = feedbacks.map(feedback => `
+                <div class="feedback-item">
+                    <div class="feedback-header">
+                        <strong>${feedback.name}</strong>
+                        <span class="feedback-subject">${feedback.subject.replace('-', ' ').toUpperCase()}</span>
+                        <span class="feedback-date">${new Date(feedback.timestamp).toLocaleDateString()}</span>
+                    </div>
+                    <div class="feedback-email">${feedback.email}</div>
+                    <div class="feedback-message">${feedback.message}</div>
+                    ${feedback.newsletter ? '<div class="feedback-newsletter">📧 Subscribed to newsletter</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === adminModal) {
+                adminModal.style.display = 'none';
+                adminLogin.style.display = 'block';
+                adminContent.style.display = 'none';
+                adminPin.value = '';
+                adminError.textContent = '';
+            }
+        });
+
+        // Profile functionality
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const signinBtn = document.getElementById('signin-btn');
+            const profileContainer = document.getElementById('profile-container');
+            const profileName = document.getElementById('profile-name');
+            const profileAvatar = document.getElementById('profile-avatar');
+            const statsBtn = document.getElementById('stats-btn');
+            
+            if (currentUser) {
+                signinBtn.style.display = 'none';
+                profileContainer.style.display = 'flex';
+                profileName.textContent = currentUser.displayName || currentUser.name || currentUser.username;
+                profileAvatar.textContent = currentUser.avatar || (currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U');
+                if (statsBtn) statsBtn.style.display = 'inline-block';
+            } else {
+                signinBtn.style.display = 'inline-block';
+                profileContainer.style.display = 'none';
+                if (statsBtn) statsBtn.style.display = 'none';
+            }
+        }
+
+        // Profile dropdown functionality
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        if (profileBtn) {
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (profileBtn && !profileBtn.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Profile settings
+        const profileSettings = document.getElementById('profile-settings');
+        if (profileSettings) {
+            profileSettings.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    const newUsername = prompt('Enter new username:', currentUser.displayName || currentUser.name || currentUser.username);
+                    if (newUsername && newUsername.trim()) {
+                        currentUser.displayName = newUsername.trim();
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        checkAuthStatus();
+                    }
+                }
+            });
+        }
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                checkAuthStatus();
+                window.location.reload();
+            });
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        if (themeToggle) {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        // Initialize on page load
+        checkAuthStatus();
+    </script>
+</body>
+</html>

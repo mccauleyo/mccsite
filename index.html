@@ -7,7 +7,7 @@
     <meta name="description" content="A clean, modern opening page." >
     <link rel="stylesheet" href="styles.css">
   </head>
-  <body>
+  <body class="main-page">
     <header class="site-header">
       <div class="container header-content">
         <div class="brand">
@@ -17,9 +17,9 @@
         <nav class="nav">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a class="btn btn-small" href="get-started.html">Get Started</a>
           <a class="btn-pixel" href="game.html">Games</a>
           <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+          <a href="contact.html">Contact</a>
           <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
           <div class="profile-container" id="profile-container" style="display: none;">
             <button class="profile-btn" id="profile-btn">
@@ -27,13 +27,14 @@
               <span class="profile-name" id="profile-name"></span>
             </button>
             <div class="profile-dropdown" id="profile-dropdown">
-              <a href="get-started.html" class="profile-dropdown-item">Dashboard</a>
+              <a href="dashboard.html" class="profile-dropdown-item">Stats</a>
               <a href="game.html" class="profile-dropdown-item">Play Games</a>
               <button class="profile-dropdown-item" id="profile-settings-btn">Profile Settings</button>
               <div class="profile-dropdown-divider"></div>
               <button class="profile-dropdown-item" id="logout-btn">Sign Out</button>
             </div>
           </div>
+          <a href="dashboard.html" class="stats-toggle" aria-label="Stats">📊</a>
           <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
             <span class="theme-icon">🌙</span>
@@ -41,37 +42,216 @@
         </nav>
       </div>
     </header>
+    <!-- Floating background elements -->
+    <div class="floating-element floating-1">✨</div>
+    <div class="floating-element floating-2">💫</div>
+    <div class="floating-element floating-3">⭐</div>
+    <div class="floating-element floating-4">🌟</div>
+    <div class="floating-element floating-5">✨</div>
+    <div class="floating-element floating-6">🎮</div>
+    <div class="floating-element floating-7">🤖</div>
+    <div class="floating-element floating-8">⚡</div>
+    <div class="floating-element floating-9">🎯</div>
+    <div class="floating-element floating-10">🚀</div>
+    <div class="floating-element floating-11">💎</div>
+    <div class="floating-element floating-12">🔥</div>
+    
     <main>
+      <!-- Hero Section -->
       <section class="hero" id="get-started">
         <div class="container hero-content">
-          <h1>Welcome to my website user!</h1>
-          <p>This is a test website to demonstrate the power of AI.</p>
-          <div class="cta-group">
-            <a class="btn btn-game" href="game.html">Game</a>
-            <a class="btn btn-outline" href="about.html">Learn More</a>
+          <div class="hero-text">
+            <h1 class="hero-title">
+              <span class="title-line">Welcome to the</span>
+              <span class="title-line highlight">Future of Gaming</span>
+              <span class="title-line">Experience</span>
+            </h1>
+            <p class="hero-description">
+              Immerse yourself in cutting-edge games, chat with our advanced AI assistant, 
+              and unlock exclusive features. This isn't just a website—it's your gateway to 
+              the next generation of digital entertainment.
+            </p>
+            <div class="cta-group">
+              <a class="btn btn-primary btn-glow" href="game.html">
+                <span class="btn-icon">🎮</span>
+                Start Playing
+                <span class="btn-arrow">→</span>
+              </a>
+              <a class="btn btn-outline btn-outline-glow" href="ai-chat.html">
+                <span class="btn-icon">🤖</span>
+                Chat with AI
+              </a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <span class="stat-number" id="total-games">4</span>
+                <span class="stat-label">Games Available</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="ai-powered">100%</span>
+                <span class="stat-label">AI Powered</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" id="user-count">∞</span>
+                <span class="stat-label">Possibilities</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="floating-cards">
+              <div class="floating-card game-card">
+                <div class="card-icon">🎯</div>
+                <div class="card-title">Tic Tac Toe</div>
+                <div class="card-subtitle">Strategy</div>
+              </div>
+              <div class="floating-card game-card">
+                <div class="card-icon">🔴</div>
+                <div class="card-title">Connect 4</div>
+                <div class="card-subtitle">Thinking</div>
+              </div>
+              <div class="floating-card game-card">
+                <div class="card-icon">🐍</div>
+                <div class="card-title">Snake</div>
+                <div class="card-subtitle">Retro</div>
+              </div>
+              <div class="floating-card game-card">
+                <div class="card-icon">♔</div>
+                <div class="card-title">Chess</div>
+                <div class="card-subtitle">Master</div>
+              </div>
+              <div class="floating-card ai-card">
+                <div class="card-icon">🤖</div>
+                <div class="card-title">AI Chat</div>
+                <div class="card-subtitle">Smart</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      <!-- Features Section -->
       <section class="features" id="features">
-        <div class="container features-grid">
-          <article class="card">
-            <h3>About me</h3>
-            <p>This site was made by me (Mccauley)</p>
-          </article>
-          <article class="card">
-            <h3>Why this site exists?</h3>
-            <p>I made this site to demonstrate the power of AI.</p>  
-          </article>
-          <article class="card">
-            <h3>Plans for the future</h3>
-            <p>Developing more features and making this site more useful.</p>
-          </article>
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Why Choose Our Platform?</h2>
+            <p class="section-subtitle">Experience the perfect blend of technology and entertainment</p>
+          </div>
+          <div class="features-grid">
+            <article class="feature-card">
+              <div class="feature-icon">🎮</div>
+              <h3>Premium Games</h3>
+              <p>Play classic and modern games with stunning visuals and smooth gameplay. From strategy to action, we have it all.</p>
+              <div class="feature-highlight">4 Games Available</div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">🤖</div>
+              <h3>AI Assistant</h3>
+              <p>Chat with our advanced AI that understands context, remembers conversations, and provides intelligent responses.</p>
+              <div class="feature-highlight">Always Learning</div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">📊</div>
+              <h3>Track Progress</h3>
+              <p>Monitor your gaming stats, achievements, and progress with our comprehensive analytics dashboard.</p>
+              <div class="feature-highlight">Real-time Stats</div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">🎨</div>
+              <h3>Customization</h3>
+              <p>Personalize your experience with themes, avatars, and settings that match your style and preferences.</p>
+              <div class="feature-highlight">Fully Customizable</div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">💰</div>
+              <h3>Earn Rewards</h3>
+              <p>Play games and chat with AI to earn coins, unlock achievements, and access exclusive content.</p>
+              <div class="feature-highlight">Reward System</div>
+            </article>
+            <article class="feature-card">
+              <div class="feature-icon">⚡</div>
+              <h3>Lightning Fast</h3>
+              <p>Optimized for speed and performance. Enjoy seamless gameplay and instant AI responses without any lag.</p>
+              <div class="feature-highlight">Zero Latency</div>
+            </article>
+          </div>
         </div>
       </section>
+
+      <!-- About Section -->
       <section class="about" id="about">
         <div class="container">
-          <h2>Explore the site</h2>
-          <p>feel free to explore the site and see what it's all about.</p>
+          <div class="about-content">
+            <div class="about-text">
+              <h2>Built with Passion & Innovation</h2>
+              <p class="about-description">
+                This platform represents the perfect fusion of traditional gaming and cutting-edge AI technology. 
+                Created by Mccauley, it showcases the incredible potential of artificial intelligence in creating 
+                engaging, interactive experiences that adapt and evolve with every user interaction.
+              </p>
+              <div class="about-features">
+                <div class="about-feature">
+                  <span class="feature-check">✓</span>
+                  <span>AI-Powered Conversations</span>
+                </div>
+                <div class="about-feature">
+                  <span class="feature-check">✓</span>
+                  <span>Real-time Game Analytics</span>
+                </div>
+                <div class="about-feature">
+                  <span class="feature-check">✓</span>
+                  <span>Responsive Design</span>
+                </div>
+                <div class="about-feature">
+                  <span class="feature-check">✓</span>
+                  <span>Cross-Platform Compatibility</span>
+                </div>
+              </div>
+              <div class="about-cta">
+                <a class="btn btn-primary" href="about.html">Learn More About Us</a>
+                <a class="btn btn-outline" href="contact.html">Get in Touch</a>
+              </div>
+            </div>
+            <div class="about-visual">
+              <div class="tech-stack">
+                <div class="tech-item">
+                  <div class="tech-icon">⚡</div>
+                  <div class="tech-name">Performance</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-icon">🔒</div>
+                  <div class="tech-name">Security</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-icon">🎨</div>
+                  <div class="tech-name">Design</div>
+                </div>
+                <div class="tech-item">
+                  <div class="tech-icon">🚀</div>
+                  <div class="tech-name">Innovation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <div class="container">
+          <div class="cta-content">
+            <h2>Ready to Experience the Future?</h2>
+            <p>Join thousands of users who are already enjoying our platform. Start your journey today!</p>
+            <div class="cta-buttons">
+              <a class="btn btn-primary btn-large" href="game.html">
+                <span class="btn-icon">🎮</span>
+                Start Playing Now
+              </a>
+              <a class="btn btn-outline btn-large" href="get-started.html">
+                <span class="btn-icon">👤</span>
+                Create Account
+              </a>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -379,12 +559,16 @@
         signinBtn.style.display = 'none';
         profileName.textContent = user.displayName || user.name;
         profileAvatar.textContent = user.avatar || user.name.charAt(0).toUpperCase();
+        
+        // Stats button is always visible
       }
       
       // Hide profile from header
       function hideProfile() {
         profileContainer.style.display = 'none';
         signinBtn.style.display = 'inline-block';
+        
+        // Stats button is always visible
       }
       
       // Generate avatar options
@@ -476,9 +660,18 @@
         // Update all users array
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const userIndex = users.findIndex(u => u.id === currentUser.id);
+        const isNewUser = userIndex === -1;
+        
         if (userIndex !== -1) {
           users[userIndex] = currentUser;
-          localStorage.setItem('users', JSON.stringify(users));
+        } else {
+          users.push(currentUser);
+        }
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Send welcome email for new users
+        if (isNewUser) {
+          sendWelcomeEmail(currentUser);
         }
         
         // Update header display
@@ -552,9 +745,178 @@
         }
       });
       
-      // Initialize profile on page load
-      checkAuthStatus();
+        // Initialize profile on page load
+        checkAuthStatus();
+        
+        // Enhanced homepage interactions
+        initHomepageEffects();
+        
+        function initHomepageEffects() {
+            // Parallax effect for floating cards
+            const floatingCards = document.querySelectorAll('.floating-card');
+            window.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                floatingCards.forEach((card, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const x = (mouseX - 0.5) * speed * 20;
+                    const y = (mouseY - 0.5) * speed * 20;
+                    card.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.1}deg)`;
+                });
+            });
+            
+            // Interactive stats counter
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            statNumbers.forEach(stat => observer.observe(stat));
+            
+            // Feature card hover effects
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-15px) scale(1.02)';
+                    card.style.boxShadow = '0 25px 50px rgba(0, 191, 255, 0.15)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                    card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+                });
+            });
+            
+            // Floating elements mouse interaction
+            const floatingElements = document.querySelectorAll('.floating-element');
+            floatingElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    element.style.transform = 'scale(1.5) rotate(360deg)';
+                    element.style.transition = 'all 0.5s ease';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+            
+            // Smooth scroll for CTA buttons
+            const ctaButtons = document.querySelectorAll('.cta-group a, .about-cta a, .cta-buttons a');
+            ctaButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    if (button.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(button.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+        }
+        
+        function animateCounter(element) {
+            const target = parseInt(element.textContent);
+            const duration = 2000;
+            const increment = target / (duration / 16);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 16);
+        }
       
+      
+      // Dashboard functionality
+      function trackUserActivity(activity) {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) return;
+        
+        const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+        const activityData = {
+          icon: getActivityIcon(activity),
+          text: getActivityText(activity),
+          time: new Date().toLocaleTimeString(),
+          timestamp: new Date().toISOString()
+        };
+        
+        activities.unshift(activityData);
+        if (activities.length > 20) activities.pop(); // Keep only last 20 activities
+        
+        localStorage.setItem('userActivities', JSON.stringify(activities));
+      }
+      
+      function getActivityIcon(activity) {
+        const icons = {
+          'visited_home': '🏠',
+          'played_game': '🎮',
+          'ai_chat': '🤖',
+          'sent_feedback': '📧',
+          'visited_dashboard': '📊',
+          'changed_settings': '⚙️'
+        };
+        return icons[activity] || '📝';
+      }
+      
+      function getActivityText(activity) {
+        const texts = {
+          'visited_home': 'Visited home page',
+          'played_game': 'Played Tic Tac Toe',
+          'ai_chat': 'Chatted with AI assistant',
+          'sent_feedback': 'Sent feedback message',
+          'visited_dashboard': 'Visited dashboard',
+          'changed_settings': 'Updated settings'
+        };
+        return texts[activity] || 'Performed an action';
+      }
+      
+      // Track activity when page loads
+      if (JSON.parse(localStorage.getItem('currentUser'))) {
+        trackUserActivity('visited_home');
+      }
+      
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+      // Initialize EmailJS
+      (function() {
+        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+      })();
+      
+      // Send welcome email function
+      function sendWelcomeEmail(userData) {
+        const templateParams = {
+          to_email: 'mccodonn@gmail.com', // Your email address
+          user_name: userData.displayName || userData.name || userData.username,
+          user_email: userData.email,
+          signup_date: new Date().toLocaleDateString(),
+          signup_time: new Date().toLocaleTimeString(),
+          from_name: 'MCCSITE System'
+        };
+
+        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+          .then(function(response) {
+            console.log('Welcome email sent successfully!', response.status, response.text);
+          }, function(error) {
+            console.log('Failed to send welcome email:', error);
+          });
+      }
     </script>
   </body>
 </html>

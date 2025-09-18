@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats - MCCSITE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body class="dashboard-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">M</div>
+                    <span class="brand-name">MCCSITE</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a class="btn-pixel" href="game.html">Games</a>
+                    <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+                    <a href="contact.html" class="btn btn-outline">Contact</a>
+                    <span class="stats-toggle active" aria-label="Stats">📊</span>
+                    <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
+                    <div class="profile-container" id="profile-container" style="display: none;">
+                        <button class="profile-btn" id="profile-btn">
+                            <div class="profile-avatar" id="profile-avatar"></div>
+                            <span class="profile-name" id="profile-name">User</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <span class="profile-dropdown-item current">📊 Stats (Current Page)</span>
+                            <a href="#" id="profile-settings">Profile Settings</a>
+                            <a href="#" id="logout-btn">Logout</a>
+                        </div>
+                    </div>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Your Stats</h1>
+                <p>Track your progress and view your statistics</p>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="dashboard-grid">
+                    <!-- User Stats -->
+                    <div class="dashboard-card stats-card">
+                        <h2>Your Stats</h2>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">🎮</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="games-played">0</span>
+                                    <span class="stat-label">Games Played</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🏆</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="wins">0</span>
+                                    <span class="stat-label">Wins</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">💬</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="ai-chats">0</span>
+                                    <span class="stat-label">AI Chats</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">⭐</div>
+                                <div class="stat-content">
+                                    <span class="stat-number" id="member-since">0</span>
+                                    <span class="stat-label">Days as Member</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coin System -->
+                    <div class="dashboard-card coins-card">
+                        <h2>💰 Coins</h2>
+                        <div class="coins-display">
+                            <div class="coin-amount" id="coin-amount">0</div>
+                            <div class="coin-label">Coins Available</div>
+                        </div>
+                        <div class="coin-actions">
+                            <a href="shop.html" class="btn btn-primary">🛒 Shop</a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="dashboard-card actions-card">
+                        <h2>Quick Actions</h2>
+                        <div class="action-buttons">
+                            <a href="game.html" class="action-btn">
+                                <div class="action-icon">🎮</div>
+                                <span>Play Game</span>
+                            </a>
+                            <a href="ai-chat.html" class="action-btn">
+                                <div class="action-icon">🤖</div>
+                                <span>Chat with AI</span>
+                            </a>
+                            <a href="contact.html" class="action-btn">
+                                <div class="action-icon">📧</div>
+                                <span>Send Feedback</span>
+                            </a>
+                            <button class="action-btn" id="export-data-btn">
+                                <div class="action-icon">📊</div>
+                                <span>Export Data</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exclusive Content -->
+                    <div class="dashboard-card exclusive-card">
+                        <h2>Exclusive Content</h2>
+                        <div class="exclusive-content">
+                            <div class="exclusive-item">
+                                <h3>🎨 Custom Themes</h3>
+                                <p>Access to premium color schemes and backgrounds</p>
+                                <button class="btn btn-small" id="themes-btn">View Themes</button>
+                            </div>
+                            <div class="exclusive-item">
+                                <h3>🎵 Sound Packs</h3>
+                                <p>Exclusive sound effects and background music</p>
+                                <button class="btn btn-small" id="sounds-btn">View Sounds</button>
+                            </div>
+                            <div class="exclusive-item">
+                                <h3>📈 Advanced Analytics</h3>
+                                <p>Detailed insights into your usage patterns</p>
+                                <button class="btn btn-small" id="analytics-btn">View Analytics</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dashboard-card activity-card">
+                        <h2>Recent Activity</h2>
+                        <div class="activity-list" id="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">🎮</div>
+                                <div class="activity-content">
+                                    <span class="activity-text">Welcome to MCCSITE!</span>
+                                    <span class="activity-time">Just now</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Premium Features -->
+                    <div class="dashboard-card premium-card">
+                        <h2>Premium Features</h2>
+                        <div class="premium-features">
+                            <div class="premium-item">
+                                <div class="premium-icon">🚀</div>
+                                <div class="premium-content">
+                                    <h3>Priority Support</h3>
+                                    <p>Get faster responses to your feedback</p>
+                                </div>
+                            </div>
+                            <div class="premium-item">
+                                <div class="premium-icon">🎯</div>
+                                <div class="premium-content">
+                                    <h3>Advanced AI</h3>
+                                    <p>Enhanced AI responses and capabilities</p>
+                                </div>
+                            </div>
+                            <div class="premium-item">
+                                <div class="premium-icon">📱</div>
+                                <div class="premium-content">
+                                    <h3>Mobile App</h3>
+                                    <p>Access MCCSITE on your mobile device</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings -->
+                    <div class="dashboard-card settings-card">
+                        <h2>Account Settings</h2>
+                        <div class="settings-list">
+                            <div class="setting-item">
+                                <span>Email Notifications</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="email-notifications" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Dark Mode</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="dark-mode-toggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Sound Effects</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="sound-effects" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">M</div>
+                    <span class="brand-name">MCCSITE</span>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="game.html">Games</a>
+                    <a href="ai-chat.html">AI Assistant</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MCCSITE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'get-started.html';
+                return;
+            }
+
+            // Update dashboard with user data
+            updateUserStats();
+            loadRecentActivity();
+            updateCoinDisplay();
+            setupSettings();
+
+            // Export data functionality
+            document.getElementById('export-data-btn').addEventListener('click', exportUserData);
+
+            // Premium feature buttons
+            document.getElementById('themes-btn').addEventListener('click', () => {
+                alert('🎨 Premium themes coming soon! This is an exclusive feature for signed-in users.');
+            });
+
+            document.getElementById('sounds-btn').addEventListener('click', () => {
+                alert('🎵 Sound packs coming soon! This is an exclusive feature for signed-in users.');
+            });
+
+            document.getElementById('analytics-btn').addEventListener('click', () => {
+                alert('📈 Advanced analytics coming soon! This is an exclusive feature for signed-in users.');
+            });
+        });
+
+        function updateUserStats() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            // Get stats from currentUser.stats (where our game tracking stores them)
+            const userStats = currentUser.stats || {
+                gamesPlayed: 0,
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                totalScore: 0
+            };
+            
+            // Calculate days as member
+            const joinDate = new Date(currentUser.joinDate || currentUser.createdAt || new Date());
+            const today = new Date();
+            const daysSince = Math.floor((today - joinDate) / (1000 * 60 * 60 * 24));
+            
+            // Update coin display
+            document.getElementById('coin-amount').textContent = (currentUser.coins || 0).toLocaleString();
+            
+            // Update stats display
+            document.getElementById('games-played').textContent = userStats.gamesPlayed || 0;
+            document.getElementById('wins').textContent = userStats.wins || 0;
+            document.getElementById('ai-chats').textContent = userStats.aiChats || 0;
+            document.getElementById('member-since').textContent = daysSince;
+        }
+
+        function loadRecentActivity() {
+            const activityList = document.getElementById('activity-list');
+            const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+            
+            if (activities.length === 0) {
+                activities.push({
+                    icon: '🎮',
+                    text: 'Welcome to MCCSITE!',
+                    time: 'Just now'
+                });
+            }
+            
+            activityList.innerHTML = activities.map(activity => `
+                <div class="activity-item">
+                    <div class="activity-icon">${activity.icon}</div>
+                    <div class="activity-content">
+                        <span class="activity-text">${activity.text}</span>
+                        <span class="activity-time">${activity.time}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupSettings() {
+            // Load saved settings
+            const settings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+            
+            document.getElementById('email-notifications').checked = settings.emailNotifications !== false;
+            document.getElementById('dark-mode-toggle').checked = settings.darkMode || false;
+            document.getElementById('sound-effects').checked = settings.soundEffects !== false;
+
+            // Save settings when changed
+            document.getElementById('email-notifications').addEventListener('change', saveSettings);
+            document.getElementById('dark-mode-toggle').addEventListener('change', saveSettings);
+            document.getElementById('sound-effects').addEventListener('change', saveSettings);
+        }
+
+        function saveSettings() {
+            const settings = {
+                emailNotifications: document.getElementById('email-notifications').checked,
+                darkMode: document.getElementById('dark-mode-toggle').checked,
+                soundEffects: document.getElementById('sound-effects').checked
+            };
+            
+            localStorage.setItem('userSettings', JSON.stringify(settings));
+            
+            // Apply dark mode if changed
+            if (settings.darkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        }
+
+        function exportUserData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const userStats = JSON.parse(localStorage.getItem('userStats') || '{}');
+            const userActivities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+            const userSettings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+            
+            const exportData = {
+                user: currentUser,
+                stats: userStats,
+                activities: userActivities,
+                settings: userSettings,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `mccsite-data-${currentUser.username}-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Coin System Functions
+        function updateCoinDisplay() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const coins = currentUser.coins || 0;
+            document.getElementById('coin-amount').textContent = coins.toLocaleString();
+        }
+
+        function addCoins(amount) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            currentUser.coins = (currentUser.coins || 0) + amount;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateCoinDisplay();
+        }
+
+        function spendCoins(amount) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return false;
+            
+            if ((currentUser.coins || 0) >= amount) {
+                currentUser.coins = (currentUser.coins || 0) - amount;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateCoinDisplay();
+                return true;
+            }
+            return false;
+        }
+
+        // Profile functionality
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const signinBtn = document.getElementById('signin-btn');
+            const profileContainer = document.getElementById('profile-container');
+            const profileName = document.getElementById('profile-name');
+            const profileAvatar = document.getElementById('profile-avatar');
+            
+            if (currentUser) {
+                signinBtn.style.display = 'none';
+                profileContainer.style.display = 'flex';
+                profileName.textContent = currentUser.displayName || currentUser.name || currentUser.username;
+                profileAvatar.textContent = currentUser.avatar || (currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U');
+            } else {
+                signinBtn.style.display = 'inline-block';
+                profileContainer.style.display = 'none';
+            }
+        }
+
+        // Profile dropdown functionality
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        if (profileBtn) {
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (profileBtn && !profileBtn.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Profile settings
+        const profileSettings = document.getElementById('profile-settings');
+        if (profileSettings) {
+            profileSettings.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    const newUsername = prompt('Enter new username:', currentUser.displayName || currentUser.name || currentUser.username);
+                    if (newUsername && newUsername.trim()) {
+                        currentUser.displayName = newUsername.trim();
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        checkAuthStatus();
+                    }
+                }
+            });
+        }
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                checkAuthStatus();
+                window.location.reload();
+            });
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        if (themeToggle) {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        // Initialize on page load
+        checkAuthStatus();
+
+    </script>
+</body>
+</html>

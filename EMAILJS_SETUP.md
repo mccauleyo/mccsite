@@ -1,67 +1,183 @@
 # EmailJS Setup Guide
 
-To enable real email functionality for your website, follow these steps:
+## 🚀 Quick Setup
 
-## 1. Create EmailJS Account
-1. Go to [https://www.emailjs.com/](https://www.emailjs.com/)
+### 1. Create EmailJS Account
+1. Go to [EmailJS.com](https://www.emailjs.com/)
 2. Sign up for a free account
 3. Verify your email address
 
-## 2. Create Email Service
-1. In your EmailJS dashboard, go to "Email Services"
+### 2. Add Email Service
+1. In EmailJS dashboard, go to "Email Services"
 2. Click "Add New Service"
 3. Choose your email provider (Gmail, Outlook, etc.)
-4. Follow the setup instructions for your provider
-5. Note down your **Service ID**
+4. Follow the setup instructions
+5. Copy the Service ID
 
-## 3. Create Email Template
-1. Go to "Email Templates" in your dashboard
+### 3. Create Email Templates
+
+#### Template 1: Welcome Email (for new signups)
+1. Go to "Email Templates"
 2. Click "Create New Template"
-3. Use this template content:
+3. Name it "Welcome Email"
+4. Use this template:
 
-**Subject:** Verify Your Email - {{site_name}}
+**Subject:** New User Signup - {{user_name}}
 
-**Content:**
+**Body:**
 ```
-Hello {{to_name}},
+Hello!
 
-Thank you for signing up for {{site_name}}!
+A new user has signed up for MCCSITE:
 
-Please click the link below to verify your email address:
-{{verification_link}}
+Name: {{user_name}}
+Email: {{user_email}}
+Signup Date: {{signup_date}}
+Signup Time: {{signup_time}}
 
-If you didn't create an account, please ignore this email.
+You can view their profile and activity in your admin panel.
 
 Best regards,
-The {{site_name}} Team
+MCCSITE System
 ```
 
-4. Save the template and note down your **Template ID**
+#### Template 2: Contact Form (for feedback)
+1. Create another template
+2. Name it "Contact Form"
+3. Use this template:
 
-## 4. Get Public Key
-1. Go to "Account" in your dashboard
-2. Find your **Public Key** in the API Keys section
+**Subject:** Contact Form: {{subject}}
 
-## 5. Update Your Website
-Replace these placeholders in your HTML files:
+**Body:**
+```
+New contact form submission:
 
-- Replace `YOUR_EMAILJS_PUBLIC_KEY` with your actual public key
-- Replace `YOUR_SERVICE_ID` with your service ID  
-- Replace `YOUR_TEMPLATE_ID` with your template ID
+From: {{from_name}} ({{from_email}})
+Subject: {{subject}}
+Message: {{message}}
+Newsletter: {{newsletter}}
+Time: {{timestamp}}
 
-## 6. Test the Email Functionality
-1. Sign up for a new account on your website
-2. Go to Profile Settings
-3. Click "Send Verification Email"
-4. Check your email inbox for the verification email
+You can reply directly to: {{from_email}}
 
-## Free Tier Limits
-- 200 emails per month
-- Perfect for testing and small websites
-- Upgrade for more emails if needed
+Best regards,
+MCCSITE Contact System
+```
 
-## Troubleshooting
-- Make sure all IDs are correct
-- Check browser console for errors
-- Verify your email service is properly connected
-- Test with a real email address
+4. Save both templates and copy their Template IDs
+
+### 4. Get Public Key
+1. Go to "Account" → "General"
+2. Copy your Public Key
+
+### 5. Update Your Code
+
+#### In `index.html` (welcome emails):
+```javascript
+// Replace YOUR_PUBLIC_KEY with your actual public key
+emailjs.init("YOUR_PUBLIC_KEY");
+
+// Replace YOUR_SERVICE_ID with your service ID
+// Replace YOUR_TEMPLATE_ID with your welcome email template ID
+emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+```
+
+#### In `contact.html` (contact form emails):
+```javascript
+// Replace YOUR_PUBLIC_KEY with your actual public key
+emailjs.init("YOUR_PUBLIC_KEY");
+
+// Replace YOUR_SERVICE_ID with your service ID
+// Replace YOUR_CONTACT_TEMPLATE_ID with your contact form template ID
+emailjs.send('YOUR_SERVICE_ID', 'YOUR_CONTACT_TEMPLATE_ID', templateParams)
+```
+
+### 6. Test the Setup
+1. Open your website
+2. Create a new user profile
+3. Check your email for the welcome message
+
+## 📧 Email Template Variables
+
+### Welcome Email Variables:
+- `{{user_name}}` - User's display name
+- `{{user_email}}` - User's email address
+- `{{signup_date}}` - Date they signed up
+- `{{signup_time}}` - Time they signed up
+- `{{from_name}}` - Always "MCCSITE System"
+
+### Contact Form Variables:
+- `{{from_name}}` - Person's name who submitted the form
+- `{{from_email}}` - Person's email address
+- `{{subject}}` - Subject of their message
+- `{{message}}` - Their message content
+- `{{newsletter}}` - "Yes" or "No" for newsletter subscription
+- `{{timestamp}}` - Date and time of submission
+- `{{reply_to}}` - Email address to reply to
+
+## 🔧 Advanced Configuration
+
+### Custom Email Template
+You can customize the email template with:
+- HTML formatting
+- Additional user data
+- Company branding
+- Links to your admin panel
+
+### Multiple Recipients
+To send to multiple email addresses, modify the template:
+
+```javascript
+const templateParams = {
+  to_email: 'mccodonn@gmail.com,admin@yoursite.com',
+  // ... other parameters
+};
+```
+
+### Error Handling
+The system logs errors to the console. Check browser console for:
+- Invalid API keys
+- Template errors
+- Service connection issues
+
+## 💡 Tips
+
+1. **Test in development** before going live
+2. **Check spam folder** for test emails
+3. **Monitor email limits** (free plan has limits)
+4. **Use descriptive subjects** for easy identification
+5. **Set up email filters** to organize signup notifications
+
+## 🚨 Troubleshooting
+
+### Common Issues:
+1. **"Invalid API key"** - Check your public key
+2. **"Service not found"** - Verify service ID
+3. **"Template not found"** - Check template ID
+4. **"Email not sending"** - Check service configuration
+
+### Support:
+- EmailJS Documentation: https://www.emailjs.com/docs/
+- EmailJS Support: https://www.emailjs.com/support/
+
+## 📊 Monitoring
+
+### EmailJS Dashboard:
+- View sent emails
+- Monitor delivery status
+- Check error logs
+- Track usage limits
+
+### Your Email:
+- Set up filters for signup notifications
+- Create labels for organization
+- Set up auto-replies if needed
+
+## 🎯 Next Steps
+
+1. Set up your EmailJS account
+2. Configure the email service
+3. Create the email template
+4. Update the code with your keys
+5. Test the signup process
+6. Start receiving welcome emails! 📧

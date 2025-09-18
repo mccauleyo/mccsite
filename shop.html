@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - MCCSITE</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body class="shop-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">M</div>
+                    <span class="brand-name">MCCSITE</span>
+                </div>
+                <nav class="nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a class="btn-pixel" href="game.html">Games</a>
+                    <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+                    <a href="contact.html">Contact</a>
+                    <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
+                    <div class="profile-container" id="profile-container" style="display: none;">
+                        <button class="profile-btn" id="profile-btn">
+                            <div class="profile-avatar" id="profile-avatar"></div>
+                            <span class="profile-name" id="profile-name">User</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown">
+                            <a href="dashboard.html" id="stats-link">Stats</a>
+                            <a href="#" id="profile-settings">Profile Settings</a>
+                            <a href="#" id="logout-btn">Logout</a>
+                        </div>
+                    </div>
+                    <a href="dashboard.html" class="stats-toggle" aria-label="Stats">📊</a>
+                    <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>🛒 Shop</h1>
+                <p>Spend your earned coins on avatars, themes, and exclusive items</p>
+            </div>
+        </section>
+
+        <section class="shop-section">
+            <div class="container">
+                <!-- Coin Balance -->
+                <div class="coin-balance">
+                    <div class="coin-display">
+                        <span class="coin-icon">💰</span>
+                        <span class="coin-amount" id="user-coins">0</span>
+                        <span class="coin-label">Coins Available</span>
+                    </div>
+                </div>
+
+                <!-- Shop Categories -->
+                <div class="shop-categories">
+                    <button class="category-btn active" data-category="avatars">👤 Avatars</button>
+                    <button class="category-btn" data-category="themes">🎨 Themes</button>
+                    <button class="category-btn" data-category="items">🎁 Items</button>
+                </div>
+
+
+                <!-- Avatars Section -->
+                <div class="shop-category" id="avatars-section">
+                    <h2>👤 Avatars</h2>
+                    <div class="items-grid">
+                        <div class="shop-item" data-item="avatar-1">
+                            <div class="item-icon">😀</div>
+                            <div class="item-name">Happy Face</div>
+                            <div class="item-price">50 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('avatar-1', 50, '😀')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="avatar-2">
+                            <div class="item-icon">🤖</div>
+                            <div class="item-name">Robot</div>
+                            <div class="item-price">100 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('avatar-2', 100, '🤖')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="avatar-3">
+                            <div class="item-icon">🎭</div>
+                            <div class="item-name">Drama Mask</div>
+                            <div class="item-price">150 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('avatar-3', 150, '🎭')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="avatar-4">
+                            <div class="item-icon">👑</div>
+                            <div class="item-name">Crown</div>
+                            <div class="item-price">200 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('avatar-4', 200, '👑')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="avatar-5">
+                            <div class="item-icon">🔥</div>
+                            <div class="item-name">Fire</div>
+                            <div class="item-price">300 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('avatar-5', 300, '🔥')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="avatar-6">
+                            <div class="item-icon">⭐</div>
+                            <div class="item-name">Star</div>
+                            <div class="item-price">250 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('avatar-6', 250, '⭐')">Buy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Themes Section -->
+                <div class="shop-category" id="themes-section">
+                    <h2>🎨 Themes</h2>
+                    <div class="items-grid">
+                        <div class="shop-item" data-item="theme-1">
+                            <div class="item-preview dark-theme"></div>
+                            <div class="item-name">Dark Pro</div>
+                            <div class="item-price">100 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('theme-1', 100, 'dark-pro')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="theme-2">
+                            <div class="item-preview neon-theme"></div>
+                            <div class="item-name">Neon City</div>
+                            <div class="item-price">200 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('theme-2', 200, 'neon-city')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="theme-3">
+                            <div class="item-preview ocean-theme"></div>
+                            <div class="item-name">Ocean Blue</div>
+                            <div class="item-price">150 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('theme-3', 150, 'ocean-blue')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="theme-4">
+                            <div class="item-preview forest-theme"></div>
+                            <div class="item-name">Forest Green</div>
+                            <div class="item-price">180 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('theme-4', 180, 'forest-green')">Buy</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items Section -->
+                <div class="shop-category" id="items-section">
+                    <h2>🎁 Special Items</h2>
+                    <div class="items-grid">
+                        <div class="shop-item" data-item="item-1">
+                            <div class="item-icon">🎵</div>
+                            <div class="item-name">Sound Pack</div>
+                            <div class="item-price">75 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('item-1', 75, 'sound-pack')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="item-2">
+                            <div class="item-icon">🎆</div>
+                            <div class="item-name">Fireworks Effect</div>
+                            <div class="item-price">120 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('item-2', 120, 'fireworks')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="item-3">
+                            <div class="item-icon">💫</div>
+                            <div class="item-name">Particle Effects</div>
+                            <div class="item-price">90 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('item-3', 90, 'particles')">Buy</button>
+                        </div>
+                        <div class="shop-item" data-item="item-4">
+                            <div class="item-icon">🏆</div>
+                            <div class="item-name">Trophy Display</div>
+                            <div class="item-price">150 coins</div>
+                            <button class="btn btn-outline" onclick="buyItem('item-4', 150, 'trophy')">Buy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Shop functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'get-started.html';
+                return;
+            }
+
+            
+            // Update coin display
+            updateCoinDisplay();
+            
+            // Setup category switching
+            setupCategorySwitching();
+            
+            // Load user's inventory
+            loadUserInventory();
+        });
+
+        function updateCoinDisplay() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const coins = currentUser.coins || 0;
+            document.getElementById('user-coins').textContent = coins.toLocaleString();
+        }
+
+        function setupCategorySwitching() {
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const categories = document.querySelectorAll('.shop-category');
+
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons and categories
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    categories.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding category
+                    btn.classList.add('active');
+                    const category = btn.dataset.category;
+                    document.getElementById(`${category}-section`).classList.add('active');
+                });
+            });
+        }
+
+        function loadUserInventory() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const inventory = currentUser.inventory || [];
+            
+            // Update item buttons based on ownership
+            inventory.forEach(item => {
+                const itemElement = document.querySelector(`[data-item="${item.id}"]`);
+                if (itemElement) {
+                    const button = itemElement.querySelector('button');
+                    button.textContent = 'Owned';
+                    button.classList.remove('btn-outline');
+                    button.classList.add('btn-success');
+                    button.disabled = true;
+                }
+            });
+        }
+
+
+        function buyItem(itemId, price, itemData) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            if ((currentUser.coins || 0) < price) {
+                alert('Not enough coins!');
+                return;
+            }
+            
+            if (confirm(`Purchase this item for ${price} coins?`)) {
+                // Deduct coins
+                currentUser.coins = (currentUser.coins || 0) - price;
+                
+                // Add to inventory
+                if (!currentUser.inventory) currentUser.inventory = [];
+                currentUser.inventory.push({
+                    id: itemId,
+                    data: itemData,
+                    purchased: new Date().toISOString()
+                });
+                
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                updateCoinDisplay();
+                loadUserInventory();
+                alert('Item purchased successfully!');
+            }
+        }
+
+        // Profile functionality
+        function checkAuthStatus() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const signinBtn = document.getElementById('signin-btn');
+            const profileContainer = document.getElementById('profile-container');
+            const profileName = document.getElementById('profile-name');
+            const profileAvatar = document.getElementById('profile-avatar');
+            
+            if (currentUser) {
+                signinBtn.style.display = 'none';
+                profileContainer.style.display = 'flex';
+                profileName.textContent = currentUser.displayName || currentUser.name || currentUser.username;
+                profileAvatar.textContent = currentUser.avatar || (currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U');
+            } else {
+                signinBtn.style.display = 'inline-block';
+                profileContainer.style.display = 'none';
+            }
+        }
+
+        // Profile dropdown functionality
+        const profileBtn = document.getElementById('profile-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+        
+        if (profileBtn) {
+            profileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (profileBtn && !profileBtn.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Profile settings
+        const profileSettings = document.getElementById('profile-settings');
+        if (profileSettings) {
+            profileSettings.addEventListener('click', (e) => {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    const newUsername = prompt('Enter new username:', currentUser.displayName || currentUser.name || currentUser.username);
+                    if (newUsername && newUsername.trim()) {
+                        currentUser.displayName = newUsername.trim();
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        checkAuthStatus();
+                    }
+                }
+            });
+        }
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                checkAuthStatus();
+                window.location.reload();
+            });
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        if (themeToggle) {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateThemeIcon(newTheme);
+            });
+        }
+        
+        function updateThemeIcon(theme) {
+            if (themeIcon) {
+                themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+
+        // Initialize on page load
+        checkAuthStatus();
+    </script>
+</body>
+</html>

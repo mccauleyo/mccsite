@@ -20,7 +20,7 @@
       .confetti-canvas { position: absolute; inset: 0; pointer-events: none; }
     </style>
   </head>
-  <body>
+  <body class="game-page">
     <header class="site-header">
       <div class="container header-content">
         <div class="brand">
@@ -30,9 +30,9 @@
         <nav class="nav">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a class="btn btn-small" href="get-started.html">Get Started</a>
           <a class="btn-pixel" href="game.html">Games</a>
           <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+          <a href="contact.html">Contact</a>
           <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
           <div class="profile-container" id="profile-container" style="display: none;">
             <button class="profile-btn" id="profile-btn">
@@ -40,13 +40,14 @@
               <span class="profile-name" id="profile-name"></span>
             </button>
             <div class="profile-dropdown" id="profile-dropdown">
-              <a href="get-started.html" class="profile-dropdown-item">Dashboard</a>
+              <a href="dashboard.html" class="profile-dropdown-item">Stats</a>
               <a href="game.html" class="profile-dropdown-item">Play Games</a>
               <button class="profile-dropdown-item" id="profile-settings-btn">Profile Settings</button>
               <div class="profile-dropdown-divider"></div>
               <button class="profile-dropdown-item" id="logout-btn">Sign Out</button>
             </div>
           </div>
+          <a href="dashboard.html" class="stats-toggle" aria-label="Stats">📊</a>
           <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
             <span class="theme-icon">🌙</span>
@@ -54,6 +55,14 @@
         </nav>
       </div>
     </header>
+    <!-- Game-themed floating elements -->
+    <div class="floating-element">🎮</div>
+    <div class="floating-element">🎯</div>
+    <div class="floating-element">🎲</div>
+    <div class="floating-element">🎪</div>
+    <div class="floating-element">🎨</div>
+    <div class="floating-element">🎵</div>
+    
     <main>
       <section class="hero">
         <div class="container hero-content">
@@ -101,7 +110,7 @@
             <option value="medium">Medium</option>
             <option value="hard" selected>Hard</option>
           </select>
-          <button class="game-btn" id="restart">Restart</button>
+          <button class="game-btn" id="restart" style="display: none;">Restart</button>
         </div>
         <div class="board" id="board" aria-label="Tic Tac Toe board" role="grid"></div>
         <div class="hint">Tip: Click a square to place X. The AI plays O.</div>
@@ -118,7 +127,7 @@
             <option value="medium">Medium</option>
             <option value="hard" selected>Hard</option>
           </select>
-          <button class="game-btn" id="restart-connect4">Restart</button>
+          <button class="game-btn" id="restart-connect4" style="display: none;">Restart</button>
         </div>
         <div class="connect4-board" id="connect4-board" aria-label="Connect 4 board" role="grid"></div>
         <div class="hint">Tip: Click a column to drop your piece. Get 4 in a row to win!</div>
@@ -163,7 +172,7 @@
               <option value="berry">🫐 Berry</option>
               <option value="coin">🪙 Coin</option>
             </select>
-            <button class="game-btn" id="restart-snake">Restart</button>
+            <button class="game-btn" id="restart-snake" style="display: none;">Restart</button>
           </div>
         </div>
         <div class="snake-container">
@@ -203,7 +212,7 @@
               <option value="wood">Wood</option>
               <option value="marble">Marble</option>
             </select>
-            <button class="game-btn" id="restart-chess">Restart</button>
+            <button class="game-btn" id="restart-chess" style="display: none;">Restart</button>
           </div>
         </div>
         <div class="chess-container">
@@ -282,6 +291,130 @@
       </div>
     </footer>
     <script>
+      // Game over popup functionality - Define globally first
+      function showGameOverPopup(result) {
+        const popup = document.createElement('div');
+        popup.className = 'game-over-popup';
+        
+        let icon, title, message, color;
+        
+        switch(result) {
+          case 'win':
+            icon = '🎉';
+            title = 'You Win!';
+            message = 'Congratulations! You won the game!';
+            color = '#22c55e';
+            break;
+          case 'lose':
+            icon = '😢';
+            title = 'Game Over!';
+            message = 'Better luck next time!';
+            color = '#ef4444';
+            break;
+          case 'draw':
+            icon = '🤝';
+            title = 'It\'s a Draw!';
+            message = 'Great game! It ended in a tie!';
+            color = '#f59e0b';
+            break;
+          default:
+            icon = '🎮';
+            title = 'Game Over!';
+            message = 'Thanks for playing!';
+            color = '#6366f1';
+        }
+        
+        popup.innerHTML = `
+          <div class="popup-content" style="border-color: ${color};">
+            <div class="popup-icon">${icon}</div>
+            <h2 style="color: ${color};">${title}</h2>
+            <p>${message}</p>
+            <p class="auto-restart-message">Game will restart automatically in <span id="countdown">3</span> seconds...</p>
+            <div class="popup-buttons">
+              <button class="btn btn-outline" onclick="exitGame()">Exit Game</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(popup);
+        
+        // Auto-restart countdown
+        let countdown = 3;
+        const countdownElement = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+          countdown--;
+          if (countdownElement) {
+            countdownElement.textContent = countdown;
+          }
+          if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            restartGame();
+          }
+        }, 1000);
+      }
+
+      // Make functions global so they can be called from onclick
+      window.restartGame = function() {
+        // Remove popup
+        const popup = document.querySelector('.game-over-popup');
+        if (popup) popup.remove();
+        
+        // Determine which game is active and restart it
+        const ticTacToeGame = document.getElementById('tic-tac-toe-game');
+        const connect4Game = document.getElementById('connect4-game');
+        const snakeGame = document.getElementById('snake-game');
+        const chessGame = document.getElementById('chess-game');
+        
+        if (ticTacToeGame && ticTacToeGame.style.display !== 'none') {
+          // Reset Tic Tac Toe game
+          board = Array(9).fill(null);
+          gameOverFlag = false;
+          statusEl.textContent = 'Your turn';
+          updateUI();
+          // Clear any winning highlights
+          [...boardEl.children].forEach(cell => cell.classList.remove('winning'));
+        } else if (connect4Game && connect4Game.style.display !== 'none') {
+          // Reset Connect 4 game
+          connect4Board = Array(connect4Rows).fill().map(() => Array(connect4Cols).fill(''));
+          connect4CurrentPlayer = 'red';
+          connect4GameOver = false;
+          updateConnect4Status('Your turn - Drop a red piece');
+          updateConnect4Display();
+        } else if (snakeGame && snakeGame.style.display !== 'none') {
+          if (typeof initSnake === 'function') initSnake();
+        } else if (chessGame && chessGame.style.display !== 'none') {
+          // Reset Chess game
+          chessBoard = [
+            ['r','n','b','q','k','b','n','r'],
+            ['p','p','p','p','p','p','p','p'],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['P','P','P','P','P','P','P','P'],
+            ['R','N','B','Q','K','B','N','R']
+          ];
+          chessCurrentPlayer = 'white';
+          chessGameActive = true;
+          selectedPiece = null;
+          selectedSquare = null;
+          suggestedMoves = [];
+          updateChessDisplay();
+          updateChessStatus('White to move! Click a piece to select it!');
+        } else {
+          // Fallback: reload the page
+          location.reload();
+        }
+      };
+
+      window.exitGame = function() {
+        // Remove popup
+        const popup = document.querySelector('.game-over-popup');
+        if (popup) popup.remove();
+        
+        // Go back to home page
+        window.location.href = 'index.html';
+      };
+
       // Footer year
       document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -374,9 +507,14 @@
               statusEl.textContent = 'You win!';
               launchConfetti();
               playTone(880, 0.12); playTone(988, 0.12, 0.06); playTone(1175, 0.2, 0.12);
+              checkForWin();
+              updateGameStats('win');
+              showGameOverPopup('win');
             } else {
               statusEl.textContent = 'AI wins!';
               playTone(220, 0.25);
+              updateGameStats('lose');
+              showGameOverPopup('lose');
             }
             return board[a];
           }
@@ -385,6 +523,8 @@
           gameOverFlag = true;
           statusEl.textContent = "It's a draw.";
           playTone(520, 0.1); playTone(440, 0.1, 0.08);
+          updateGameStats('draw');
+          showGameOverPopup('draw');
           return 'draw';
         }
         statusEl.textContent = 'Your turn';
@@ -765,6 +905,14 @@
               updateConnect4Status(`${connect4CurrentPlayer === 'red' ? 'You' : 'AI'} wins!`);
               showConnect4Confetti();
               playSound('win');
+              if (connect4CurrentPlayer === 'red') {
+                checkForWin();
+                updateGameStats('win');
+                showGameOverPopup('win');
+              } else {
+                updateGameStats('lose');
+                showGameOverPopup('lose');
+              }
               return;
             }
             
@@ -773,6 +921,8 @@
               connect4GameOver = true;
               updateConnect4Status("It's a draw!");
               playSound('draw');
+              updateGameStats('draw');
+              showGameOverPopup('draw');
               return;
             }
             
@@ -1306,6 +1456,10 @@
         }
         const isNewHighScore = score === highScore && score > 0;
         updateSnakeStatus(`Game Over! Final Score: ${score}${isNewHighScore ? ' - NEW HIGH SCORE!' : ''} - Press restart to play again`);
+        
+        // Update stats and show game over popup
+        updateGameStats('lose');
+        showGameOverPopup('lose');
       }
       
       function updateSnakeStatus(message) {
@@ -1505,6 +1659,25 @@
             } else {
               updateChessStatus('White to move! Click a piece to select it!');
               generateSuggestedMoves();
+              
+              // Check if white has any possible moves (checkmate/stalemate detection)
+              const whiteMoves = getAllPossibleMoves('white');
+              if (whiteMoves.length === 0) {
+                // Check if king is in check (checkmate) or not (stalemate)
+                const isInCheck = isKingInCheck('white');
+                if (isInCheck) {
+                  updateChessStatus('Checkmate! Black wins!');
+                  chessGameActive = false;
+                  updateGameStats('lose');
+                  showGameOverPopup('lose');
+                } else {
+                  updateChessStatus('Stalemate! It\'s a draw!');
+                  chessGameActive = false;
+                  updateGameStats('draw');
+                  showGameOverPopup('draw');
+                }
+                return;
+              }
             }
           } else {
             // Invalid move, deselect
@@ -1573,6 +1746,31 @@
         return true;
       }
       
+      function isKingInCheck(color) {
+        // Find the king
+        const kingPiece = color === 'white' ? 'K' : 'k';
+        let kingRow = -1, kingCol = -1;
+        
+        for (let row = 0; row < 8; row++) {
+          for (let col = 0; col < 8; col++) {
+            if (chessBoard[row][col] === kingPiece) {
+              kingRow = row;
+              kingCol = col;
+              break;
+            }
+          }
+          if (kingRow !== -1) break;
+        }
+        
+        if (kingRow === -1) return false; // King not found
+        
+        // Check if any opponent piece can attack the king
+        const opponentColor = color === 'white' ? 'black' : 'white';
+        const opponentMoves = getAllPossibleMoves(opponentColor);
+        
+        return opponentMoves.some(move => move.toRow === kingRow && move.toCol === kingCol);
+      }
+      
       function makeAIMove() {
         if (chessCurrentPlayer !== 'black' || aiThinking) return;
         
@@ -1580,9 +1778,22 @@
         const possibleMoves = getAllPossibleMoves('black');
         
         if (possibleMoves.length === 0) {
-          updateChessStatus('Checkmate! White wins!');
-          chessGameActive = false;
-          aiThinking = false;
+          // Check if black king is in check (checkmate) or not (stalemate)
+          const isInCheck = isKingInCheck('black');
+          if (isInCheck) {
+            updateChessStatus('Checkmate! White wins!');
+            chessGameActive = false;
+            aiThinking = false;
+            checkForWin();
+            updateGameStats('win');
+            showGameOverPopup('win');
+          } else {
+            updateChessStatus('Stalemate! It\'s a draw!');
+            chessGameActive = false;
+            aiThinking = false;
+            updateGameStats('draw');
+            showGameOverPopup('draw');
+          }
           return;
         }
         
@@ -1721,8 +1932,78 @@
       
       // Initialize Connect 4 on page load (hidden)
       initConnect4();
+        // Coin System Functions
+        function addCoins(amount) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            currentUser.coins = (currentUser.coins || 0) + amount;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        // Track user activity and stats
+        function trackUserActivity(activity) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+            const activityData = {
+                activity: activity,
+                timestamp: new Date().toISOString(),
+                page: 'games'
+            };
+            activities.push(activityData);
+            localStorage.setItem('userActivities', JSON.stringify(activities));
+        }
+
+        // Update game stats
+        function updateGameStats(result) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            // Initialize stats if they don't exist
+            if (!currentUser.stats) {
+                currentUser.stats = {
+                    gamesPlayed: 0,
+                    wins: 0,
+                    losses: 0,
+                    draws: 0,
+                    totalScore: 0
+                };
+            }
+            
+            // Update stats based on result
+            currentUser.stats.gamesPlayed++;
+            
+            if (result === 'win') {
+                currentUser.stats.wins++;
+                currentUser.stats.totalScore += 10; // 10 points per win
+                trackUserActivity('game_won');
+            } else if (result === 'lose') {
+                currentUser.stats.losses++;
+                trackUserActivity('game_lost');
+            } else if (result === 'draw') {
+                currentUser.stats.draws++;
+                currentUser.stats.totalScore += 1; // 1 point per draw
+                trackUserActivity('game_draw');
+            }
+            
+            // Save updated user data
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        // Earn coins for game wins
+        function checkForWin() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                addCoins(10); // Earn 10 coins for winning
+            }
+        }
+
+
+
     </script>
-  </body>
-  </html>
+</body>
+</html>
 
 

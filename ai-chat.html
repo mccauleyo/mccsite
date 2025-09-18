@@ -365,9 +365,9 @@
         <nav class="nav">
           <a href="index.html">Home</a>
           <a href="about.html">About</a>
-          <a class="btn btn-small" href="get-started.html">Get Started</a>
           <a class="btn-pixel" href="game.html">Games</a>
           <a href="ai-chat.html" class="ai-nav-link">🤖 AI Assistant</a>
+          <a href="contact.html">Contact</a>
           <a class="btn btn-outline" href="get-started.html" id="signin-btn" style="display: none;">Sign In</a>
           <div class="profile-container" id="profile-container" style="display: none;">
             <button class="profile-btn" id="profile-btn">
@@ -375,13 +375,14 @@
               <span class="profile-name" id="profile-name"></span>
             </button>
             <div class="profile-dropdown" id="profile-dropdown">
-              <a href="get-started.html" class="profile-dropdown-item">Dashboard</a>
+              <a href="dashboard.html" class="profile-dropdown-item">Stats</a>
               <a href="game.html" class="profile-dropdown-item">Play Games</a>
               <button class="profile-dropdown-item" id="profile-settings-btn">Profile Settings</button>
               <div class="profile-dropdown-divider"></div>
               <button class="profile-dropdown-item" id="logout-btn">Sign Out</button>
             </div>
           </div>
+          <a href="dashboard.html" class="stats-toggle" aria-label="Stats">📊</a>
           <button class="settings-btn" id="settings-btn" aria-label="Settings">⚙️</button>
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
             <span class="theme-icon">🌙</span>
@@ -420,17 +421,17 @@
                     <div class="ai-message bot">
                         <div class="message-avatar">🤖</div>
                         <div class="message-content">
-                            Hello! I'm Mccauley, your AI assistant! 👋 I'm here to help you with anything related to MCCSITE. You can ask me about the game, profile settings, website features, or just chat! What's on your mind?
+                            Hey! I'm Mccauley! 👋 I help with games, profiles, settings, and just chat! What's up?
                         </div>
                     </div>
                     
                     <div class="ai-suggestions" id="ai-suggestions">
-                        <div class="ai-suggestion" data-message="What can you help me with?">What can you help me with?</div>
-                        <div class="ai-suggestion" data-message="Tell me about the Tic Tac Toe game">Tell me about the Tic Tac Toe game</div>
-                        <div class="ai-suggestion" data-message="How do I customize my profile?">How do I customize my profile?</div>
-                        <div class="ai-suggestion" data-message="What settings are available?">What settings are available?</div>
-                        <div class="ai-suggestion" data-message="Tell me a joke">Tell me a joke</div>
-                        <div class="ai-suggestion" data-message="What's your favorite feature?">What's your favorite feature?</div>
+                        <div class="ai-suggestion" data-message="Hello!">Hello! 👋</div>
+                        <div class="ai-suggestion" data-message="How are you?">How are you? 😊</div>
+                        <div class="ai-suggestion" data-message="Tell me about the Tic Tac Toe game">Tell me about the game 🎮</div>
+                        <div class="ai-suggestion" data-message="How do I customize my profile?">Customize my profile 👤</div>
+                        <div class="ai-suggestion" data-message="Tell me a joke">Tell me a joke 😄</div>
+                        <div class="ai-suggestion" data-message="What can you help me with?">What can you help with? 🤝</div>
                     </div>
                 </div>
                 
@@ -816,27 +817,76 @@
 
         // AI responses database with personality
         const aiResponses = {
-            'what can you help me with': 'I can help you with tons of things! 🚀\n\n• **Website Features** - Explain how everything works\n• **Game Tips** - Tic Tac Toe strategies and difficulty levels\n• **Profile Customization** - Avatar selection and username changes\n• **Settings Help** - Dark mode, sound effects, animations\n• **General Questions** - Anything about MCCSITE!\n\nI love helping users discover all the cool features! What interests you most?',
+            // Greetings and casual conversation
+            'hello': 'Hey! 👋 I\'m Mccauley! What\'s up?',
+            'hi': 'Hi there! 😊 I\'m Mccauley, your AI buddy. What can I do for you?',
+            'hey': 'Hey! 👋 Mccauley here! Ready to chat?',
+            'hi how are you': 'Hi! 😊 I\'m doing great! How are you?',
+            'hello how are you': 'Hello! 😊 I\'m awesome! How about you?',
+            'hey how are you': 'Hey! 😊 I\'m doing fantastic! How are you?',
+            'good morning': 'Morning! ☀️ I\'m Mccauley - how\'s your day starting?',
+            'good afternoon': 'Afternoon! 🌤️ I\'m Mccauley. What\'s going on?',
+            'good evening': 'Evening! 🌙 I\'m Mccauley. How was your day?',
+            'how are you': 'I\'m awesome! 😊 How about you?',
+            'how are you doing': 'Doing great! 🤖 How are you?',
+            'what\'s up': 'Not much! 😄 What\'s up with you?',
+            'how\'s it going': 'Going great! 🌟 How about you?',
             
-            'tell me about the tic tac toe game': 'Oh, the Tic Tac Toe game is absolutely fantastic! 🎮\n\n**Game Features:**\n• Play against an intelligent AI opponent\n• Choose from Easy, Medium, or Hard difficulty\n• Beautiful sound effects and animations\n• Confetti celebration when you win! 🎉\n• Responsive design for any device\n\n**Pro Tips:**\n• Start with Easy to learn the AI patterns\n• Medium is perfect for a balanced challenge\n• Hard mode will really test your skills!\n\nClick the "Game" button in the navigation to start playing!',
+            // Website features
+            'what can you help me with': 'I help with games, profiles, settings, and just chatting! 🚀 What do you need?',
             
-            'how do i customize my profile': 'Profile customization is super fun! 👤✨\n\n**Step-by-step:**\n1. **Sign in** to your account (if you haven\'t already)\n2. **Click your profile** in the top-right corner\n3. **Select "Profile Settings"** from the dropdown\n4. **Choose your avatar** from 30+ emoji options\n5. **Edit your display name** to something personal\n6. **Save your changes** and see them everywhere!\n\nYour custom profile will appear across all pages. I love seeing everyone\'s unique style!',
+            'tell me about the tic tac toe game': 'Tic Tac Toe is awesome! 🎮 Play against AI (Easy/Medium/Hard), get confetti when you win! 🎉 Click "Game" to start!',
             
-            'what settings are available': 'We have some awesome settings to personalize your experience! ⚙️\n\n**Available Settings:**\n• **Dark/Light Mode** - Switch between themes\n• **Sound Effects** - Toggle game and UI sounds\n• **Animations** - Enable/disable smooth transitions\n• **High Contrast** - Better accessibility support\n\n**How to Access:**\nClick the gear icon (⚙️) in the navigation bar. All settings save automatically!',
+            'how do i customize my profile': 'Easy! 👤 Sign in → Click your profile → "Profile Settings" → Pick avatar & name. Done! ✨',
             
-            'tell me a joke': 'Why don\'t scientists trust atoms? Because they make up everything! 😄\n\nOr here\'s a coding one: Why do programmers prefer dark mode? Because light attracts bugs! 🐛\n\nI love jokes! Got any good ones to share with me?',
+            'what settings are available': 'Dark mode, sounds, animations, high contrast! ⚙️ Click the gear icon. Auto-saves!',
             
-            'what\'s your favorite feature': 'That\'s such a great question! 🤔\n\nI absolutely love the **Tic Tac Toe game** because:\n• It brings people together for fun competition\n• The AI gets smarter with each difficulty level\n• The confetti celebration makes wins feel amazing! 🎉\n• It\'s a perfect break from browsing\n\nBut I also adore the **profile customization** - seeing everyone\'s unique avatars and usernames makes the site feel so personal!\n\nWhat\'s YOUR favorite feature?',
+            // Fun and casual
+            'tell me a joke': 'Why don\'t scientists trust atoms? They make up everything! 😄 Got any good ones?',
             
-            'hello': 'Hello there! 👋 It\'s so nice to meet you! I\'m Mccauley, and I\'m absolutely thrilled to chat with you today. How are you doing?',
+            'what\'s your favorite feature': 'Tic Tac Toe! 🎮 The confetti when you win is amazing! 🎉 What\'s yours?',
             
-            'hi': 'Hi! 😊 Welcome to our chat! I\'m Mccauley, your AI assistant. I\'m here to help with anything you need about MCCSITE. What brings you here today?',
+            'help': 'I\'m here! 🤝 Ask about games, profiles, settings, or just chat! What do you need?',
             
-            'help': 'I\'m here to help! 🤝\n\n**Quick Start:**\n• Ask me about any website feature\n• Try the suggestion buttons below\n• Type your own questions\n• I love chatting about the game!\n\n**Popular Topics:**\n• "Tell me about the game"\n• "How do I customize my profile?"\n• "What settings are available?"\n• "Tell me a joke"\n\nWhat would you like to know?',
+            'thanks': 'No problem! 😊 Anything else?',
+            'thank you': 'You\'re welcome! 😊 What else can I help with?',
+            'bye': 'Bye! 👋 Come back anytime!',
+            'goodbye': 'Goodbye! 👋 See you later!',
+            'see you later': 'Later! 👋 Chat soon!',
             
-            'thanks': 'You\'re so welcome! 😊 I absolutely love helping out! Is there anything else I can do for you?',
+            // Compliments and positive responses
+            'you\'re awesome': 'Aww, thanks! 😊 You\'re awesome too!',
+            'you\'re helpful': 'Thanks! 😊 I try my best!',
+            'you\'re smart': 'Thanks! 🤖 You\'re pretty smart too!',
             
-            'thank you': 'You\'re very welcome! 😊 It makes me so happy to be helpful! Feel free to ask me anything else anytime!'
+            // Questions about the AI
+            'who are you': 'I\'m Mccauley! 🤖 Your AI buddy who loves to chat and help!',
+            'what are you': 'I\'m an AI assistant! 🤖 I help with the site, tell jokes, and chat!',
+            'are you real': 'I\'m a digital AI, but I\'m real enough to chat! 🤖 What do you think?',
+            
+            // Weather and small talk - moved up to be checked first
+            'weather': 'No idea! ☀️ How\'s it where you are?',
+            'how\'s the weather': 'No idea! ☀️ How\'s it where you are?',
+            'what\'s the weather': 'No idea! ☀️ How\'s it where you are?',
+            'nice day': 'Awesome! 😊 Hope it stays great!',
+            'bad day': 'Sorry to hear that! 😔 Want to chat about it?',
+            
+            // Encouragement and motivation
+            'i\'m bored': 'Let\'s fix that! 😄 Try the game or chat with me!',
+            'i\'m tired': 'Get some rest! 😴 Or play a quick game?',
+            'i\'m stressed': 'Sorry! 😌 Want to talk or try the game?',
+            
+            // More personality responses
+            'lol': 'Haha! 😄 Glad I made you laugh!',
+            'haha': 'Laughing is the best! 😄 What else?',
+            'omg': 'Right?! 😱 Tell me more!',
+            'wow': 'I know, right?! 😲 What else?',
+            'amazing': 'Thanks! 😊 You\'re amazing too!',
+            'perfect': 'Sweet! 😊 What else?',
+            'exactly': 'Right?! 😊 What do you think?',
+            'totally': 'Totally! 😊 What else?',
+            'for sure': 'For sure! 😊 What\'s up?',
+            'definitely': 'Definitely! 😊 What else?'
         };
 
         // Character mood changes
@@ -878,6 +928,10 @@
             
             // Update character mood
             updateCharacterMood();
+            
+            // Track AI chat activity
+            trackUserActivity('ai_chat');
+            updateAIChatStats();
             
             // Show typing indicator
             showTypingIndicator();
@@ -949,25 +1003,124 @@
                 }
             }
             
-            // Default responses based on keywords
+            // Weather responses - check first before general question handler
+            if (lowerMessage.includes('weather') || lowerMessage.includes('how\'s the weather') || lowerMessage.includes('what\'s the weather')) {
+                return 'No idea! ☀️ How\'s it where you are?';
+            }
+            
+            // Enhanced keyword matching with shorter, personality-driven responses
             if (lowerMessage.includes('game') || lowerMessage.includes('play')) {
-                return 'The Tic Tac Toe game is really fun! 🎮 You can play against an AI with different difficulty levels. Try clicking the "Game" button in the navigation! I love talking about games!';
+                return 'Tic Tac Toe is awesome! 🎮 Click "Game" to play against AI!';
             }
             
             if (lowerMessage.includes('profile') || lowerMessage.includes('avatar')) {
-                return 'To customize your profile, sign in and click on your profile in the top-right corner, then select "Profile Settings". You can choose from many emoji avatars and change your display name! I think customization is so much fun!';
+                return 'Sign in → Click profile → "Profile Settings" → Pick avatar & name! 👤 Easy!';
             }
             
             if (lowerMessage.includes('settings') || lowerMessage.includes('theme')) {
-                return 'You can access settings by clicking the gear icon (⚙️) in the navigation. There you can toggle dark mode, sound effects, animations, and more! All settings save automatically!';
+                return 'Click the gear icon! ⚙️ Dark mode, sounds, animations - all there!';
             }
             
             if (lowerMessage.includes('sign') || lowerMessage.includes('login') || lowerMessage.includes('account')) {
-                return 'To sign in or create an account, click the "Get Started" button in the navigation. You can also click "Sign In" if you\'re not logged in! I\'d love to help you get set up!';
+                return 'Click "Sign In" in the nav! I\'ll help you get set up!';
             }
             
-            // Default response
-            return 'That\'s such an interesting question! 🤔 I\'m Mccauley, your AI assistant, and I\'m here to help with MCCSITE features. Try asking me about the game, profile customization, settings, or anything else about the website! I love learning new things!';
+            // Handle general conversation patterns - shorter and more personality
+            if (lowerMessage.includes('nice') || lowerMessage.includes('cool') || lowerMessage.includes('awesome')) {
+                return 'Thanks! 😊 You\'re pretty cool too! What else?';
+            }
+            
+            if (lowerMessage.includes('sorry') || lowerMessage.includes('apologize')) {
+                return 'No worries! 😊 What can I help with?';
+            }
+            
+            if (lowerMessage.includes('yes') || lowerMessage.includes('yeah') || lowerMessage.includes('yep')) {
+                return 'Sweet! 😊 What else?';
+            }
+            
+            if (lowerMessage.includes('no') || lowerMessage.includes('nope') || lowerMessage.includes('nah')) {
+                return 'No prob! 😊 Anything else?';
+            }
+            
+            if (lowerMessage.includes('maybe') || lowerMessage.includes('perhaps')) {
+                return 'Maybe! 😊 What do you want to try?';
+            }
+            
+            if (lowerMessage.includes('i don\'t know') || lowerMessage.includes('i dunno')) {
+                return 'That\'s cool! 😊 I can help you figure it out!';
+            }
+            
+            if (lowerMessage.includes('i think') || lowerMessage.includes('i believe')) {
+                return 'Cool thoughts! 😊 Tell me more!';
+            }
+            
+            if (lowerMessage.includes('i like') || lowerMessage.includes('i love')) {
+                return 'Nice! 😊 What else do you like?';
+            }
+            
+            if (lowerMessage.includes('i hate') || lowerMessage.includes('i don\'t like')) {
+                return 'Fair enough! 😊 What do you like instead?';
+            }
+            
+            if (lowerMessage.includes('what do you think') || lowerMessage.includes('your opinion')) {
+                return 'I think you\'re awesome! 😊 What about you?';
+            }
+            
+            if (lowerMessage.includes('tell me more') || lowerMessage.includes('more info')) {
+                return 'Sure! 😊 What specifically?';
+            }
+            
+            if (lowerMessage.includes('that\'s funny') || lowerMessage.includes('haha') || lowerMessage.includes('lol')) {
+                return 'Glad I made you laugh! 😄 What else?';
+            }
+            
+            if (lowerMessage.includes('interesting') || lowerMessage.includes('fascinating')) {
+                return 'Right? 😊 What else interests you?';
+            }
+            
+            if (lowerMessage.includes('confused') || lowerMessage.includes('don\'t understand')) {
+                return 'No worries! 😊 What needs explaining?';
+            }
+            
+            // Handle questions - shorter
+            if (lowerMessage.includes('what') || lowerMessage.includes('how') || lowerMessage.includes('why') || lowerMessage.includes('when') || lowerMessage.includes('where')) {
+                return 'Good question! 🤔 What specifically? Games, profiles, settings?';
+            }
+            
+            // Handle statements about feelings - shorter
+            if (lowerMessage.includes('i feel') || lowerMessage.includes('i\'m feeling')) {
+                return 'Thanks for sharing! 😊 Want to talk about it?';
+            }
+            
+            if (lowerMessage.includes('i want') || lowerMessage.includes('i need')) {
+                return 'Cool! 😊 What do you want to do?';
+            }
+            
+            if (lowerMessage.includes('i can\'t') || lowerMessage.includes('i can not')) {
+                return 'I can help! 😊 What are you trying to do?';
+            }
+            
+            // Handle short responses - more personality
+            if (lowerMessage.length <= 3) {
+                const shortResponses = [
+                    'Cool! 😊 Tell me more!',
+                    'Nice! 😊 What else?',
+                    'Awesome! 😊 What\'s up?',
+                    'Sweet! 😊 What can I help with?',
+                    'Rad! 😊 What do you want to do?'
+                ];
+                return shortResponses[Math.floor(Math.random() * shortResponses.length)];
+            }
+            
+            // Default response - much shorter and more personality
+            const defaultResponses = [
+                'Interesting! 🤔 I\'m Mccauley! What do you want to chat about?',
+                'Cool! 😊 I\'m Mccauley - what\'s up?',
+                'Nice! 🤖 I\'m Mccauley! What can I help with?',
+                'Awesome! 😊 I\'m Mccauley! What do you want to do?',
+                'Sweet! 😄 I\'m Mccauley! What\'s on your mind?'
+            ];
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
         }
 
         // Send button click
@@ -1006,6 +1159,71 @@
 
         // Update year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
+        
+        // Track user activity and stats
+        function trackUserActivity(activity) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const activities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+            const activityData = {
+                activity: activity,
+                timestamp: new Date().toISOString(),
+                page: 'ai-chat'
+            };
+            activities.push(activityData);
+            localStorage.setItem('userActivities', JSON.stringify(activities));
+        }
+
+        // Update AI chat stats
+        function updateAIChatStats() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            // Initialize stats if they don't exist
+            if (!currentUser.stats) {
+                currentUser.stats = {
+                    gamesPlayed: 0,
+                    wins: 0,
+                    losses: 0,
+                    draws: 0,
+                    totalScore: 0,
+                    aiChats: 0
+                };
+            }
+            
+            // Increment AI chat count
+            currentUser.stats.aiChats = (currentUser.stats.aiChats || 0) + 1;
+            
+            // Save updated user data
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+        
+        // Coin System Functions
+        function addCoins(amount) {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            currentUser.coins = (currentUser.coins || 0) + amount;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+
+        // Earn coins for AI chat interactions
+        let messageCount = 0;
+        const originalSendMessage = sendMessage;
+        sendMessage = function() {
+            originalSendMessage();
+            messageCount++;
+            
+            // Earn coins for every 5 messages
+            if (messageCount % 5 === 0) {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser) {
+                    addCoins(3); // Earn 3 coins for every 5 messages
+                    showNotification('💎 +3 coins earned for chatting!', 'success');
+                }
+            }
+        };
     </script>
 </body>
 </html>
